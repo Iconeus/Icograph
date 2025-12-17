@@ -1,0 +1,4 @@
+Folder that could contain:
+- the configuration file for CAF. See https://actor-framework.readthedocs.io/en/latest/core/ConfiguringActorApplications.html
+- the configuration file for spdlog
+
