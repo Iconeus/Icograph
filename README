@@ -1,2 +1,15 @@
 # IcoGraph
 Preliminary study for the SessionManager
+
+Missing important items:
+- [ ] Logging system with spdlog
+- [ ] Signal handling
+- [ ] Packaging
+- [ ] Installer
+- [ ] Error handling
+- [ ] CI
+- [ ] Unit Tests
+- [ ] Release version
+- [ ] Profiling utilities
+- [ ] Audit trail
+- [ ] Configuration
