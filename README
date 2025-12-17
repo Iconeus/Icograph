@@ -3,7 +3,7 @@ Preliminary study for the SessionManager
 
 Missing important items:
 - [ ] Logging system with spdlog
-- [ ] Signal handling
+- [ ] Signal handling (exit of actors)
 - [ ] Packaging
 - [ ] Installer
 - [ ] Error handling
@@ -13,3 +13,4 @@ Missing important items:
 - [ ] Profiling utilities
 - [ ] Audit trail
 - [ ] Configuration
+- [ ] Monitoring

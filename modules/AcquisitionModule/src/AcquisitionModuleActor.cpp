@@ -34,7 +34,7 @@ namespace acq_module
  *
  * @return A `caf::behavior` that handles the `caf::get_atom` message.
  */
-caf::behavior source(caf::event_based_actor* self)
+caf::behavior sourceFun(caf::event_based_actor* self)
 {
 	return {[self](caf::get_atom)
 	        {
@@ -58,9 +58,9 @@ caf::behavior source(caf::event_based_actor* self)
  *
  * @return An empty behavior, as all logic is handled asynchronously.
  */
-caf::behavior consume(caf::event_based_actor* self,
-                      caf::actor src,
-                      std::vector<caf::actor> destActors)
+caf::behavior consumeFun(caf::event_based_actor* self,
+                         caf::actor src,
+                         std::vector<caf::actor> destActors)
 {
 	self->mail(caf::get_atom_v)
 	    .request(src, caf::infinite)
@@ -101,11 +101,11 @@ acq_module_actor::behavior_type acquisition_actor_behavior(acq_module_actor::poi
 		    // The reason we use caf::stream and not plain caf::observable is because
 		    // observables cannot be read simultaneously by several observers at the
 		    // same time.
-		    auto srcActor = self->spawn(source);
+		    auto srcActor = self->spawn(sourceFun);
 
 		    // Consumer: Will create an observer for the stream of data and will pass
 		    // the result to the viewer actor
-		    auto consumerActor = self->spawn(consume, srcActor, destActors);
+		    auto consumerActor = self->spawn(consumeFun, srcActor, destActors);
 	    }};
 }
 
