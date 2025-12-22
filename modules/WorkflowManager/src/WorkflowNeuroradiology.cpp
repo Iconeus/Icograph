@@ -22,16 +22,9 @@ void WorkflowNeuroradiology::execute()
 
 // --------------------------------------------------------------------
 
-std::string WorkflowNeuroradiology::getName() const
-{
-	return to_string(getType());
-}
-
-// --------------------------------------------------------------------
-
 WorkflowType WorkflowNeuroradiology::getType() const
 {
-	return WorkflowType::NEURORADIOLOGY;
+	return WorkflowType::NeuroRadiology;
 }
 
 }  // namespace workflow

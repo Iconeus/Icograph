@@ -60,7 +60,7 @@ SessionManager::SessionManager(caf::actor_system& system)
 	// Contains a state machine that drives the workflow steps
 	auto workflowManagerActorHandle =
 	    system.spawn(caf::actor_from_state<workflow::workflow_actor_state>,
-	                 workflow::WorkflowType::NEONATE);
+	                 workflow::WorkflowType::Neonate);
 
 	// Map actors with an ID in the actor system registry to make them system-wide
 	// available by any other actor within the same actor system.

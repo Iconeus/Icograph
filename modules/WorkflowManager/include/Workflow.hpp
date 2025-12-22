@@ -58,7 +58,7 @@ public:
 	virtual void execute() = 0;
 
 	// Get the name of the workflow
-	virtual std::string getName() const = 0;
+	virtual std::string getName() const { return to_string(getType()); };
 
 	// Get the type of the workflow
 	virtual WorkflowType getType() const = 0;

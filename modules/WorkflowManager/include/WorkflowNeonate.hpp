@@ -54,9 +54,6 @@ public:
 	 */
 	void execute() override;
 
-	// Get the name of the workflow
-	std::string getName() const override;
-
 	// Get the type of the workflow
 	WorkflowType getType() const override;
 };

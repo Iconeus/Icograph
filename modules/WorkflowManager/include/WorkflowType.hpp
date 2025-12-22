@@ -23,9 +23,9 @@ namespace workflow
  */
 enum class WorkflowType : uint8_t
 {
-	NEONATE,
-	NEURORADIOLOGY,
-	NEUROSURGERY
+	Neonate,
+	NeuroRadiology,
+	NeuroSurgery
 };
 
 /**
@@ -39,13 +39,13 @@ constexpr std::string to_string(WorkflowType type)
 
 	switch (type)
 	{
-	case WorkflowType::NEONATE:
+	case WorkflowType::Neonate:
 		workflowName = "Neonate";
 		break;
-	case WorkflowType::NEURORADIOLOGY:
+	case WorkflowType::NeuroRadiology:
 		workflowName = "Neuroradiology";
 		break;
-	case WorkflowType::NEUROSURGERY:
+	case WorkflowType::NeuroSurgery:
 		workflowName = "Neurosurgery";
 		break;
 	}
@@ -63,17 +63,17 @@ constexpr std::string to_string(WorkflowType type)
 	bool status{false};
 	if (str == "Neonate")
 	{
-		type = WorkflowType::NEONATE;
+		type = WorkflowType::Neonate;
 		status = true;
 	}
 	else if (str == "Neuroradiology")
 	{
-		type = WorkflowType::NEURORADIOLOGY;
+		type = WorkflowType::NeuroRadiology;
 		status = true;
 	}
 	else if (str == "Neurosurgery")
 	{
-		type = WorkflowType::NEUROSURGERY;
+		type = WorkflowType::NeuroSurgery;
 		status = true;
 	}
 	return status;
@@ -92,16 +92,16 @@ constexpr std::string to_string(WorkflowType type)
 
 	switch (value)
 	{
-	case static_cast<std::underlying_type_t<WorkflowType>>(WorkflowType::NEONATE):
-		type = WorkflowType::NEONATE;
+	case static_cast<std::underlying_type_t<WorkflowType>>(WorkflowType::Neonate):
+		type = WorkflowType::Neonate;
 		status = true;
 		break;
-	case static_cast<std::underlying_type_t<WorkflowType>>(WorkflowType::NEURORADIOLOGY):
-		type = WorkflowType::NEURORADIOLOGY;
+	case static_cast<std::underlying_type_t<WorkflowType>>(WorkflowType::NeuroRadiology):
+		type = WorkflowType::NeuroRadiology;
 		status = true;
 		break;
-	case static_cast<std::underlying_type_t<WorkflowType>>(WorkflowType::NEUROSURGERY):
-		type = WorkflowType::NEUROSURGERY;
+	case static_cast<std::underlying_type_t<WorkflowType>>(WorkflowType::NeuroSurgery):
+		type = WorkflowType::NeuroSurgery;
 		status = true;
 		break;
 	}

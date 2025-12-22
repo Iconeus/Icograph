@@ -19,13 +19,13 @@ std::unique_ptr<Workflow> WorkflowFactory::createWorkflow(WorkflowType type)
 {
 	switch (type)
 	{
-	case WorkflowType::NEONATE:
+	case WorkflowType::Neonate:
 		return std::make_unique<WorkflowNeonate>();
 		break;
-	case WorkflowType::NEURORADIOLOGY:
+	case WorkflowType::NeuroRadiology:
 		return std::make_unique<WorkflowNeuroradiology>();
 		break;
-	case WorkflowType::NEUROSURGERY:
+	case WorkflowType::NeuroSurgery:
 	default:
 		return nullptr;  // Left as is until desired error management is chosen
 	}

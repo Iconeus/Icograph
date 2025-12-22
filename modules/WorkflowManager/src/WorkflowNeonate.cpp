@@ -22,16 +22,9 @@ void WorkflowNeonate::execute()
 
 // --------------------------------------------------------------------
 
-std::string WorkflowNeonate::getName() const
-{
-	return to_string(getType());
-}
-
-// --------------------------------------------------------------------
-
 WorkflowType WorkflowNeonate::getType() const
 {
-	return WorkflowType::NEONATE;
+	return WorkflowType::Neonate;
 }
 
 }  // namespace workflow
