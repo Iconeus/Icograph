@@ -3,6 +3,11 @@ pipeline {
         label 'Linux'
     }
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
         stage('Build Debug') {
             steps {
                 script {

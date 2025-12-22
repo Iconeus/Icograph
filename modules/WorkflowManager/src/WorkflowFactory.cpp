@@ -11,24 +11,28 @@
 #include "WorkflowFactory.hpp"
 #include "WorkflowNeonate.hpp"
 #include "WorkflowNeuroradiology.hpp"
+#include "WorkflowNeurosurgery.hpp"
 
 namespace workflow
 {
 
 std::unique_ptr<Workflow> WorkflowFactory::createWorkflow(WorkflowType type)
 {
+	std::unique_ptr<Workflow> ptr{nullptr};
 	switch (type)
 	{
 	case WorkflowType::Neonate:
-		return std::make_unique<WorkflowNeonate>();
+		ptr = std::make_unique<WorkflowNeonate>();
 		break;
 	case WorkflowType::NeuroRadiology:
-		return std::make_unique<WorkflowNeuroradiology>();
+		ptr = std::make_unique<WorkflowNeuroradiology>();
 		break;
 	case WorkflowType::NeuroSurgery:
-	default:
-		return nullptr;  // Left as is until desired error management is chosen
+		ptr = std::make_unique<WorkflowNeurosurgery>();
+		break;
 	}
+
+	return ptr;
 }
 
 }  // namespace workflow
