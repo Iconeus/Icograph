@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef WORKFLOWMANAGER_WORKFLOW_FACTORY_HPP
-#define WORKFLOWMANAGER_WORKFLOW_FACTORY_HPP
+#ifndef WORKFLOWMANAGER_WORKFLOWFACTORY_HPP
+#define WORKFLOWMANAGER_WORKFLOWFACTORY_HPP
 
 #include <memory>
 #include <string>
@@ -37,4 +37,4 @@ public:
 
 }  // namespace workflow
 
-#endif  // WORKFLOWMANAGER_WORKFLOW_FACTORY_HPP
+#endif  // WORKFLOWMANAGER_WORKFLOWFACTORY_HPP

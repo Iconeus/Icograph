@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef ACQUISITIONMODULE_ACQUISITION_TYPE_IDS_HPP
-#define ACQUISITIONMODULE_ACQUISITION_TYPE_IDS_HPP
+#ifndef ACQUISITIONMODULE_ACQUISITIONTYPEIDS_HPP
+#define ACQUISITIONMODULE_ACQUISITIONTYPEIDS_HPP
 
 #include <caf/type_id.hpp>
 
@@ -20,4 +20,4 @@ CAF_BEGIN_TYPE_ID_BLOCK(custom_types_acq_module, common_caf::custom_types_acq_mo
 CAF_ADD_ATOM(custom_types_acq_module, acq_request)
 CAF_END_TYPE_ID_BLOCK(custom_types_acq_module)
 
-#endif  // ACQUISITIONMODULE_ACQUISITION_TYPE_IDS_HPP
+#endif  // ACQUISITIONMODULE_ACQUISITIONTYPEIDS_HPP

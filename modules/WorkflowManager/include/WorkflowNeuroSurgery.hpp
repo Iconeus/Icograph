@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef WORKFLOWMANAGER_WORKFLOW_NEUROSURGERY_HPP
-#define WORKFLOWMANAGER_WORKFLOW_NEUROSURGERY_HPP
+#ifndef WORKFLOWMANAGER_WORKFLOWNEUROSURGERY_HPP
+#define WORKFLOWMANAGER_WORKFLOWNEUROSURGERY_HPP
 
 #include "Workflow.hpp"
 #include "WorkflowType.hpp"
@@ -60,4 +60,4 @@ public:
 
 }  // namespace workflow
 
-#endif  // WORKFLOWMANAGER_WORKFLOW_NEUROSURGERY_HPP
+#endif  // WORKFLOWMANAGER_WORKFLOWNEUROSURGERY_HPP
