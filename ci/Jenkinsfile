@@ -3,6 +3,15 @@ pipeline {
         label 'Linux'
     }
     stages {
+        stage('Pre Build') {
+            steps {
+                script {
+                    sh '''
+                        xmake update
+                    '''
+                }
+            }
+        }
         stage('Build Debug') {
             steps {
                 script {
