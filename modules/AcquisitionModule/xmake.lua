@@ -14,3 +14,4 @@ target("AcquisitionModuleTests")
     add_deps("CommonCAF")
     add_packages("actor-framework", {components = {"caf_core", "caf_io", "caf_test"}})
     add_links("caf_test")
+    add_tests("default", {runargs = {}}) -- Mark this target as a test

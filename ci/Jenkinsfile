@@ -4,14 +4,24 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://your-repository-url.git'
+                git 'https://github.com/Iconeus/Icograph'
             }
         }
-        stage('Build') {
+        stage('Build Debug') {
             steps {
                 script {
                     sh '''
-                        xmake config -P 4
+                        xmake config -m debug
+                        xmake build
+                    '''
+                }
+            }
+        }
+        stage('Build Release') {
+            steps {
+                script {
+                    sh '''
+                        xmake config -m release
                         xmake build
                     '''
                 }
@@ -21,7 +31,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        xmake run --unit-tests
+                        xmake test
                     '''
                 }
             }
