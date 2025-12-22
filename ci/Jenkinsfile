@@ -8,14 +8,40 @@ pipeline {
                 checkout scm
             }
         }
+        stage('Config Debug') {
+            steps {
+                script {
+                    sh '''
+                        xmake global --clean --ccache=false --theme=plain
+                        xmake repo --update --verbose --diagnosis --yes
+                        xmake config -m debug
+                    '''
+                }
+            }
+        }
         stage('Build Debug') {
             steps {
                 script {
                     sh '''
-                        xmake repo --update
-                        xmake update
-                        xmake config -m debug
                         xmake build
+                    '''
+                }
+            }
+        }
+        stage('Unit Test Debug') {
+            steps {
+                script {
+                    sh '''
+                        xmake test
+                    '''
+                }
+            }
+        }
+        stage('Config Release') {
+            steps {
+                script {
+                    sh '''
+                        xmake config -m release
                     '''
                 }
             }
@@ -24,14 +50,12 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        xmake update
-                        xmake config -m release
                         xmake build
                     '''
                 }
             }
         }
-        stage('Unit Test') {
+        stage('Unit Test Release') {
             steps {
                 script {
                     sh '''

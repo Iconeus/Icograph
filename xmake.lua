@@ -1,4 +1,3 @@
-add_repositories("xmake-repo https://github.com/xmake-io/xmake-repo")
 add_requires("actor-framework 1.1.0")
 
 add_rules("mode.debug", "mode.release")
