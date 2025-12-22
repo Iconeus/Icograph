@@ -39,9 +39,9 @@ namespace common_caf
  * custom_message_type_id::my_custom_message)
  */
 
-inline constexpr auto custom_types_general_id = caf::first_custom_type_id;
-inline constexpr auto custom_types_workflow_id = caf::first_custom_type_id + 10;
-inline constexpr auto custom_types_acq_module_id = caf::first_custom_type_id + 20;
+constexpr auto custom_types_general_id = caf::first_custom_type_id;
+constexpr auto custom_types_workflow_id = caf::first_custom_type_id + 10;
+constexpr auto custom_types_acq_module_id = caf::first_custom_type_id + 20;
 
 }  // namespace common_caf
 

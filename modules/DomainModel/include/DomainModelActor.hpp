@@ -45,7 +45,7 @@ public:
 	 * @brief: Ctor
 	 * @param: pointer to current actor
 	 */
-	domain_model_actor_state(domain_model_actor::pointer_view self);
+	explicit domain_model_actor_state(domain_model_actor::pointer_view self);
 
 	/**
 	 * @brief: Defines the callbacks upon message reception

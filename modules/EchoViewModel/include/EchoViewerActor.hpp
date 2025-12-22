@@ -45,7 +45,7 @@ public:
 	 * @brief: Ctor
 	 * @param: pointer to current actor
 	 */
-	echo_viewer_actor_state(echo_viewer_actor::pointer_view self);
+	explicit echo_viewer_actor_state(echo_viewer_actor::pointer_view self);
 
 	/**
 	 * @brief: Defines the callbacks upon message reception
