@@ -10,19 +10,19 @@
 
 #include <iostream>
 
-#include "WorkflowNeuroradiology.hpp"
+#include "WorkflowNeuroRadiology.hpp"
 
 namespace workflow
 {
 
-void WorkflowNeuroradiology::execute()
+void WorkflowNeuroRadiology::execute()
 {
 	std::cout << "Execute workflow received " << std::endl;
 }
 
 // --------------------------------------------------------------------
 
-WorkflowType WorkflowNeuroradiology::getType() const
+WorkflowType WorkflowNeuroRadiology::getType() const
 {
 	return WorkflowType::NeuroRadiology;
 }

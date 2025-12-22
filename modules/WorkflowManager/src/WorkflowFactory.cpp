@@ -10,8 +10,8 @@
 
 #include "WorkflowFactory.hpp"
 #include "WorkflowNeonate.hpp"
-#include "WorkflowNeuroradiology.hpp"
-#include "WorkflowNeurosurgery.hpp"
+#include "WorkflowNeuroRadiology.hpp"
+#include "WorkflowNeuroSurgery.hpp"
 
 namespace workflow
 {
@@ -25,10 +25,10 @@ std::unique_ptr<Workflow> WorkflowFactory::createWorkflow(WorkflowType type)
 		ptr = std::make_unique<WorkflowNeonate>();
 		break;
 	case WorkflowType::NeuroRadiology:
-		ptr = std::make_unique<WorkflowNeuroradiology>();
+		ptr = std::make_unique<WorkflowNeuroRadiology>();
 		break;
 	case WorkflowType::NeuroSurgery:
-		ptr = std::make_unique<WorkflowNeurosurgery>();
+		ptr = std::make_unique<WorkflowNeuroSurgery>();
 		break;
 	}
 

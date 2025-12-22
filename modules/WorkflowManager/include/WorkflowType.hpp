@@ -43,10 +43,10 @@ constexpr std::string to_string(WorkflowType type)
 		workflowName = "Neonate";
 		break;
 	case WorkflowType::NeuroRadiology:
-		workflowName = "Neuroradiology";
+		workflowName = "NeuroRadiology";
 		break;
 	case WorkflowType::NeuroSurgery:
-		workflowName = "Neurosurgery";
+		workflowName = "NeuroSurgery";
 		break;
 	}
 	return workflowName;
@@ -66,12 +66,12 @@ constexpr std::string to_string(WorkflowType type)
 		type = WorkflowType::Neonate;
 		status = true;
 	}
-	else if (str == "Neuroradiology")
+	else if (str == "NeuroRadiology")
 	{
 		type = WorkflowType::NeuroRadiology;
 		status = true;
 	}
-	else if (str == "Neurosurgery")
+	else if (str == "NeuroSurgery")
 	{
 		type = WorkflowType::NeuroSurgery;
 		status = true;

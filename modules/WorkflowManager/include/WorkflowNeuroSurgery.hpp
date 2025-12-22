@@ -18,36 +18,36 @@ namespace workflow
 {
 
 /**
- * \class WorkflowNeurosurgery
+ * \class WorkflowNeuroSurgery
  *
  * @brief Holder of the logic behind a neuro radiology workflow
  */
-class WorkflowNeurosurgery : public Workflow
+class WorkflowNeuroSurgery : public Workflow
 {
 public:
 	// Ctor
-	WorkflowNeurosurgery() = default;
+	WorkflowNeuroSurgery() = default;
 
 	// Dtor
-	virtual ~WorkflowNeurosurgery() = default;
+	virtual ~WorkflowNeuroSurgery() = default;
 
 	/**
 	 * @brief Copy constructor (deleted).
 	 * Copy operations are not allowed for workflows.
 	 */
-	WorkflowNeurosurgery(const WorkflowNeurosurgery&) = delete;
+	WorkflowNeuroSurgery(const WorkflowNeuroSurgery&) = delete;
 
 	/**
 	 * @brief Copy assignment operator (deleted).
 	 * Copy operations are not allowed for workflows.
 	 */
-	WorkflowNeurosurgery& operator=(const WorkflowNeurosurgery&) = delete;
+	WorkflowNeuroSurgery& operator=(const WorkflowNeuroSurgery&) = delete;
 
 	// Move ctor
-	WorkflowNeurosurgery(WorkflowNeurosurgery&&) = default;
+	WorkflowNeuroSurgery(WorkflowNeuroSurgery&&) = default;
 
 	// Move operator
-	WorkflowNeurosurgery& operator=(WorkflowNeurosurgery&&) = default;
+	WorkflowNeuroSurgery& operator=(WorkflowNeuroSurgery&&) = default;
 
 	/**
 	 * @brief Executes the workflow specific for neonate.
