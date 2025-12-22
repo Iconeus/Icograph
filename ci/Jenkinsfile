@@ -14,7 +14,7 @@ pipeline {
                     sh '''
                         xmake global --clean --ccache=false --theme=plain
                         xmake repo --update --verbose --diagnosis --yes
-                        xmake config -m debug
+                        xmake config --verbose --diagnosis --yes --mode=debug
                     '''
                 }
             }
@@ -41,7 +41,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        xmake config -m release
+                        xmake config --verbose --diagnosis --yes --mode=release
                     '''
                 }
             }
