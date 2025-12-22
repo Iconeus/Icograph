@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef ICOGRAPH_CUSTOMACTORIDENTIFIER_HPP
-#define ICOGRAPH_CUSTOMACTORIDENTIFIER_HPP
+#ifndef CAF_CUSTOMACTORIDENTIFIER_HPP
+#define CAF_CUSTOMACTORIDENTIFIER_HPP
 
 #include <caf/fwd.hpp>
 
@@ -48,4 +48,4 @@ constexpr auto custom_domain_model_actor_id = caf::actor_id(30);
 
 }  // namespace common_caf
 
-#endif  // ICOGRAPH_CUSTOMACTORIDENTIFIER_HPP
+#endif  // CAF_CUSTOMACTORIDENTIFIER_HPP

@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef ICOGRAPH_SESSIONMANAGER_HPP
-#define ICOGRAPH_SESSIONMANAGER_HPP
+#ifndef SESSIONMANAGER_SESSIONMANAGER_HPP
+#define SESSIONMANAGER_SESSIONMANAGER_HPP
 
 #include <caf/actor_system.hpp>
 
@@ -34,4 +34,4 @@ public:
 
 }  // namespace session_manager
 
-#endif  // ICOGRAPH_SESSIONMANAGER_HPP
+#endif  // SESSIONMANAGER_SESSIONMANAGER_HPP

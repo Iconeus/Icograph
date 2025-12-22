@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef ICOGRAPH_WORKFLOWACTOR_HPP
-#define ICOGRAPH_WORKFLOWACTOR_HPP
+#ifndef WORKFLOWMANAGER_WORKFLOWACTOR_HPP
+#define WORKFLOWMANAGER_WORKFLOWACTOR_HPP
 
 #include <caf/result.hpp>
 #include <caf/type_list.hpp>
@@ -67,4 +67,4 @@ private:
 
 }  // namespace workflow
 
-#endif  // ICOGRAPH_WORKFLOWACTOR_HPP
+#endif  // WORKFLOWMANAGER_WORKFLOWACTOR_HPP

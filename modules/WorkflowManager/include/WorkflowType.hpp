@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef ICOGRAPH_WORKFLOWTYPE_H
-#define ICOGRAPH_WORKFLOWTYPE_H
+#ifndef WORKFLOWMANAGER_WORKFLOWTYPE_H
+#define WORKFLOWMANAGER_WORKFLOWTYPE_H
 
 #include <cstdint>
 #include <utility>
@@ -111,4 +111,4 @@ constexpr std::string to_string(WorkflowType type)
 
 }  // namespace workflow
 
-#endif  // ICOGRAPH_WORKFLOWTYPE_H
+#endif  // WORKFLOWMANAGER_WORKFLOWTYPE_H

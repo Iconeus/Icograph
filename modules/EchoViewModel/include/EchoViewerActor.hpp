@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef ICOGRAPH_ECHOVIEWERACTOR_HPP
-#define ICOGRAPH_ECHOVIEWERACTOR_HPP
+#ifndef ECHOVIEWER_ECHOVIEWERACTOR_HPP
+#define ECHOVIEWER_ECHOVIEWERACTOR_HPP
 
 #include <caf/result.hpp>
 #include <caf/type_list.hpp>
@@ -62,4 +62,4 @@ private:
 
 }  // namespace echo_viewer
 
-#endif  // ICOGRAPH_ECHOVIEWERACTOR_HPP
+#endif  // ECHOVIEWER_ECHOVIEWERACTOR_HPP

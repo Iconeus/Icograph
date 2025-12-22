@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef ICOGRAPH_DOMAINMODELACTOR_HPP
-#define ICOGRAPH_DOMAINMODELACTOR_HPP
+#ifndef DOMAINMODEL_DOMAINMODELACTOR_HPP
+#define DOMAINMODEL_DOMAINMODELACTOR_HPP
 
 #include <caf/result.hpp>
 #include <caf/type_list.hpp>
@@ -62,4 +62,4 @@ private:
 
 }  // namespace domain_model
 
-#endif  // ICOGRAPH_DOMAINMODELACTOR_HPP
+#endif  // DOMAINMODEL_DOMAINMODELACTOR_HPP

@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef ICOGRAPH_ACQUISITIONMODULE_HPP
-#define ICOGRAPH_ACQUISITIONMODULE_HPP
+#ifndef ACQUISITIONMODULE_ACQUISITIONMODULE_HPP
+#define ACQUISITIONMODULE_ACQUISITIONMODULE_HPP
 
 #include <stdint.h>
 
@@ -38,4 +38,4 @@ public:
 };
 }  // namespace acq_module
 
-#endif  // ICOGRAPH_ACQUISITIONMODULE_HPP
+#endif  // ACQUISITIONMODULE_ACQUISITIONMODULE_HPP

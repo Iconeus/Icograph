@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef ICOGRAPH_WORKFLOW_NEONATE_H
-#define ICOGRAPH_WORKFLOW_NEONATE_H
+#ifndef WORKFLOWMANAGER_WORKFLOW_NEONATE_H
+#define WORKFLOWMANAGER_WORKFLOW_NEONATE_H
 
 #include "Workflow.hpp"
 #include "WorkflowType.hpp"
@@ -60,4 +60,4 @@ public:
 
 }  // namespace workflow
 
-#endif  // ICOGRAPH_WORKFLOW_NEONATE_H
+#endif  // WORKFLOWMANAGER_WORKFLOW_NEONATE_H
