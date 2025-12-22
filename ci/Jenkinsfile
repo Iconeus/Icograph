@@ -3,19 +3,11 @@ pipeline {
         label 'Linux'
     }
     stages {
-        stage('Pre Build') {
-            steps {
-                script {
-                    sh '''
-                        xmake update
-                    '''
-                }
-            }
-        }
         stage('Build Debug') {
             steps {
                 script {
                     sh '''
+                        xmake update
                         xmake config -m debug
                         xmake build
                     '''
@@ -26,6 +18,7 @@ pipeline {
             steps {
                 script {
                     sh '''
+                        xmake update
                         xmake config -m release
                         xmake build
                     '''
