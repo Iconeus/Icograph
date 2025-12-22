@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef WORKFLOWMANAGER_WORKFLOW_TYPE_IDS_H
-#define WORKFLOWMANAGER_WORKFLOW_TYPE_IDS_H
+#ifndef WORKFLOWMANAGER_WORKFLOWTYPEIDS_HPP
+#define WORKFLOWMANAGER_WORKFLOWTYPEIDS_HPP
 
 #include <caf/type_id.hpp>
 
@@ -36,4 +36,4 @@ bool inspect(Inspector& f, workflow::WorkflowType& workflowType)
 
 }  // namespace workflow
 
-#endif  // WORKFLOWMANAGER_WORKFLOW_TYPE_IDS_H
+#endif  // WORKFLOWMANAGER_WORKFLOWTYPEIDS_HPP
