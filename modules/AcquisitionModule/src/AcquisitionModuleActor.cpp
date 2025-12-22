@@ -34,7 +34,7 @@ namespace acq_module
  *
  * @return A `caf::behavior` that handles the `caf::get_atom` message.
  */
-caf::behavior sourceFun(caf::event_based_actor* self)
+static caf::behavior sourceFun(caf::event_based_actor* self)
 {
 	return {[self](caf::get_atom)
 	        {
@@ -58,9 +58,9 @@ caf::behavior sourceFun(caf::event_based_actor* self)
  *
  * @return An empty behavior, as all logic is handled asynchronously.
  */
-caf::behavior consumeFun(caf::event_based_actor* self,
-                         caf::actor src,
-                         std::vector<caf::actor> destActors)
+static caf::behavior consumeFun(caf::event_based_actor* self,
+                                caf::actor src,
+                                std::vector<caf::actor> destActors)
 {
 	self->mail(caf::get_atom_v)
 	    .request(src, caf::infinite)

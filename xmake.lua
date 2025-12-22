@@ -1,8 +1,10 @@
-add_defines("ROOT")
+add_repositories("xmake-repo https://github.com/xmake-io/xmake-repo")
+add_requires("actor-framework 1.1.0")
 
 add_rules("mode.debug", "mode.release")
 
 set_languages("cxx23")
+set_warnings("everything", "error") -- Treat all compilation warnings as errors
 
 includes("SessionManager")
 includes("modules/WorkflowManager")

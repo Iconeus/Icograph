@@ -25,6 +25,7 @@ std::unique_ptr<Workflow> WorkflowFactory::createWorkflow(WorkflowType type)
 	case WorkflowType::NEURORADIOLOGY:
 		return std::make_unique<WorkflowNeuroradiology>();
 		break;
+	case WorkflowType::NEUROSURGERY:
 	default:
 		return nullptr;  // Left as is until desired error management is chosen
 	}

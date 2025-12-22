@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef WORKFLOWACTOR_HPP
-#define WORKFLOWACTOR_HPP
+#ifndef ICOGRAPH_WORKFLOWACTOR_HPP
+#define ICOGRAPH_WORKFLOWACTOR_HPP
 
 #include <caf/result.hpp>
 #include <caf/type_list.hpp>
@@ -38,13 +38,14 @@ struct workflow_trait
 using workflow_actor = caf::typed_actor<workflow_trait>;
 
 /**
- * \struct workflow_actor_state
+ * \class workflow_actor_state
  *
  * @brief State class of the actor. Initialize the state of the actor and
  * provides the messaging behavior.
  */
-struct workflow_actor_state
+class workflow_actor_state
 {
+public:
 	/**
 	 * @brief: Ctor
 	 * @param: pointer to current actor
@@ -66,4 +67,4 @@ private:
 
 }  // namespace workflow
 
-#endif  // WORKFLOWACTOR_HPP
+#endif  // ICOGRAPH_WORKFLOWACTOR_HPP

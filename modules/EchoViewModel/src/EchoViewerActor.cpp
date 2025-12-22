@@ -14,11 +14,7 @@ namespace echo_viewer
 {
 
 echo_viewer_actor_state::echo_viewer_actor_state(echo_viewer_actor::pointer_view self)
-    : _self(self)
-{
-	// Instantiate dummy viewer instance. For now has no particular purpose.
-	_viewer = std::make_unique<echo_viewer::EchoViewer>();
-};
+    : _self(self), _viewer(std::make_unique<echo_viewer::EchoViewer>()){};
 
 // --------------------------------------------------------------------
 

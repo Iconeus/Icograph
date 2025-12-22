@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef DOMAINMODELACTOR_HPP
-#define DOMAINMODELACTOR_HPP
+#ifndef ICOGRAPH_DOMAINMODELACTOR_HPP
+#define ICOGRAPH_DOMAINMODELACTOR_HPP
 
 #include <caf/result.hpp>
 #include <caf/type_list.hpp>
@@ -33,13 +33,14 @@ struct domain_model_trait
 using domain_model_actor = caf::typed_actor<domain_model_trait>;
 
 /**
- * \struct domain_model_actor_state
+ * \class domain_model_actor_state
  *
  * @brief State class of the actor. Initialize the state of the actor and
  * provides the messaging behavior.
  */
-struct domain_model_actor_state
+class domain_model_actor_state
 {
+public:
 	/**
 	 * @brief: Ctor
 	 * @param: pointer to current actor
@@ -61,4 +62,4 @@ private:
 
 }  // namespace domain_model
 
-#endif  // DOMAINMODELACTOR_HPP
+#endif  // ICOGRAPH_DOMAINMODELACTOR_HPP

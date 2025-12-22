@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef CUSTOMACTORIDENTIFIER_HPP
-#define CUSTOMACTORIDENTIFIER_HPP
+#ifndef ICOGRAPH_CUSTOMACTORIDENTIFIER_HPP
+#define ICOGRAPH_CUSTOMACTORIDENTIFIER_HPP
 
 #include <caf/fwd.hpp>
 
@@ -38,14 +38,14 @@ namespace common_caf
  */
 
 /** @brief Unique ID for the workflow manager actor. */
-inline constexpr auto custom_workflow_manager_actor_id = caf::actor_id(10);
+constexpr auto custom_workflow_manager_actor_id = caf::actor_id(10);
 
 /** @brief Unique ID for the echo viewer actor. */
-inline constexpr auto custom_echo_viewer_actor_id = caf::actor_id(20);
+constexpr auto custom_echo_viewer_actor_id = caf::actor_id(20);
 
 /** @brief Unique ID for the domain model actor. */
-inline constexpr auto custom_domain_model_actor_id = caf::actor_id(30);
+constexpr auto custom_domain_model_actor_id = caf::actor_id(30);
 
 }  // namespace common_caf
 
-#endif  // CUSTOMACTORIDENTIFIER_HPP
+#endif  // ICOGRAPH_CUSTOMACTORIDENTIFIER_HPP

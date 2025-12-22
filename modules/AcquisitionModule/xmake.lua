@@ -1,8 +1,16 @@
-add_defines("ACQUISITION_MODULE")
-
-target("acquisition_module")
+target("AcquisitionModule")
     set_kind("shared")
     add_files("src/*.cpp")
     add_includedirs("include", {public = true})
-    add_deps("common_caf")
-    add_links("caf_core", "caf_io")
+    add_deps("CommonCAF")
+    add_packages("actor-framework", {components = {"caf_core", "caf_io"}})
+
+    -- Unit test target
+target("AcquisitionModuleTests")
+    set_kind("binary")  
+    add_files("tests/unit_tests/*.cpp")
+    add_includedirs("include")
+    add_deps("AcquisitionModule") 
+    add_deps("CommonCAF")
+    add_packages("actor-framework", {components = {"caf_core", "caf_io", "caf_test"}})
+    add_links("caf_test")

@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef ECHOVIEWERACTOR_HPP
-#define ECHOVIEWERACTOR_HPP
+#ifndef ICOGRAPH_ECHOVIEWERACTOR_HPP
+#define ICOGRAPH_ECHOVIEWERACTOR_HPP
 
 #include <caf/result.hpp>
 #include <caf/type_list.hpp>
@@ -33,13 +33,14 @@ struct echo_viewer_trait
 using echo_viewer_actor = caf::typed_actor<echo_viewer_trait>;
 
 /**
- * \struct echo_viewer_actor_state
+ * \class echo_viewer_actor_state
  *
  * @brief State class of the actor. Initialize the state of the actor and
  * provides the messaging behavior.
  */
-struct echo_viewer_actor_state
+class echo_viewer_actor_state
 {
+public:
 	/**
 	 * @brief: Ctor
 	 * @param: pointer to current actor
@@ -61,4 +62,4 @@ private:
 
 }  // namespace echo_viewer
 
-#endif  // ECHOVIEWERACTOR_HPP
+#endif  // ICOGRAPH_ECHOVIEWERACTOR_HPP

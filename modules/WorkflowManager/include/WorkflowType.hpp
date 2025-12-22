@@ -8,10 +8,11 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef WORKFLOWTYPE_H
-#define WORKFLOWTYPE_H
+#ifndef ICOGRAPH_WORKFLOWTYPE_H
+#define ICOGRAPH_WORKFLOWTYPE_H
 
 #include <cstdint>
+#include <utility>
 
 namespace workflow
 {
@@ -32,19 +33,23 @@ enum class WorkflowType : uint8_t
  * @param type The WorkflowType enum value to convert.
  * @return std::string The string representation of the enum value.
  */
-inline std::string to_string(WorkflowType type)
+constexpr std::string to_string(WorkflowType type)
 {
+	std::string workflowName{""};
+
 	switch (type)
 	{
 	case WorkflowType::NEONATE:
-		return "Neonate";
+		workflowName = "Neonate";
+		break;
 	case WorkflowType::NEURORADIOLOGY:
-		return "Neuroradiology";
+		workflowName = "Neuroradiology";
+		break;
 	case WorkflowType::NEUROSURGERY:
-		return "Neurosurgery";
-	default:
-		return "Unknown";
+		workflowName = "Neurosurgery";
+		break;
 	}
+	return workflowName;
 }
 
 /**
@@ -53,24 +58,25 @@ inline std::string to_string(WorkflowType type)
  * @param type Reference to the WorkflowType enum value to populate.
  * @return bool True if the conversion was successful, false otherwise.
  */
-inline bool from_string(std::string_view str, WorkflowType& type)
+[[nodiscard]] constexpr bool from_string(std::string_view str, WorkflowType& type)
 {
+	bool status{false};
 	if (str == "Neonate")
 	{
 		type = WorkflowType::NEONATE;
-		return true;
+		status = true;
 	}
 	else if (str == "Neuroradiology")
 	{
 		type = WorkflowType::NEURORADIOLOGY;
-		return true;
+		status = true;
 	}
 	else if (str == "Neurosurgery")
 	{
 		type = WorkflowType::NEUROSURGERY;
-		return true;
+		status = true;
 	}
-	return false;
+	return status;
 }
 
 /**
@@ -79,24 +85,30 @@ inline bool from_string(std::string_view str, WorkflowType& type)
  * @param type Reference to the WorkflowType enum value to populate.
  * @return bool True if the integer matches a valid enum value, false otherwise.
  */
-inline bool from_integer(std::underlying_type_t<WorkflowType> value, WorkflowType& type)
+[[nodiscard]] constexpr bool from_integer(std::underlying_type_t<WorkflowType> value,
+                                          WorkflowType& type)
 {
+	bool status{false};
+
 	switch (value)
 	{
 	case static_cast<std::underlying_type_t<WorkflowType>>(WorkflowType::NEONATE):
 		type = WorkflowType::NEONATE;
-		return true;
+		status = true;
+		break;
 	case static_cast<std::underlying_type_t<WorkflowType>>(WorkflowType::NEURORADIOLOGY):
 		type = WorkflowType::NEURORADIOLOGY;
-		return true;
+		status = true;
+		break;
 	case static_cast<std::underlying_type_t<WorkflowType>>(WorkflowType::NEUROSURGERY):
 		type = WorkflowType::NEUROSURGERY;
-		return true;
-	default:
-		return false;
+		status = true;
+		break;
 	}
+
+	return status;
 }
 
 }  // namespace workflow
 
-#endif  // WORKFLOWTYPE_H
+#endif  // ICOGRAPH_WORKFLOWTYPE_H

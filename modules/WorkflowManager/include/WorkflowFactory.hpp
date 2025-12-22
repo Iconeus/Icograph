@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef WORKFLOW_FACTORY_H
-#define WORKFLOW_FACTORY_H
+#ifndef ICOGRAPH_WORKFLOW_FACTORY_H
+#define ICOGRAPH_WORKFLOW_FACTORY_H
 
 #include <memory>
 #include <string>
@@ -32,9 +32,9 @@ public:
 	 * @brief: Creates the workflow
 	 * @param: type of the workflow
 	 */
-	static std::unique_ptr<Workflow> createWorkflow(WorkflowType type);
+	[[nodiscard]] static std::unique_ptr<Workflow> createWorkflow(WorkflowType type);
 };
 
 }  // namespace workflow
 
-#endif  // WORKFLOW_FACTORY_H
+#endif  // ICOGRAPH_WORKFLOW_FACTORY_H

@@ -22,8 +22,8 @@
 namespace session_manager
 {
 
-void callWorkflowActor(caf::event_based_actor* self,
-                       const workflow::workflow_actor& workflowActor)
+static void callWorkflowActor(caf::event_based_actor* self,
+                              const workflow::workflow_actor& workflowActor)
 {
 	self->mail(init_workflow_v).send(workflowActor);
 

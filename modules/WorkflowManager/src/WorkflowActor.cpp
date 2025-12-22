@@ -26,9 +26,8 @@ namespace workflow
 
 workflow_actor_state::workflow_actor_state(workflow_actor::pointer_view self,
                                            WorkflowType initialType)
-    : _self(self)
+    : _self(self), _currentWorkflow(WorkflowFactory::createWorkflow(initialType))
 {
-	_currentWorkflow = WorkflowFactory::createWorkflow(initialType);
 }
 
 // --------------------------------------------------------------------

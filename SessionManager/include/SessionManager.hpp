@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef SESSIONMANAGER_HPP
-#define SESSIONMANAGER_HPP
+#ifndef ICOGRAPH_SESSIONMANAGER_HPP
+#define ICOGRAPH_SESSIONMANAGER_HPP
 
 #include <caf/actor_system.hpp>
 
@@ -26,7 +26,7 @@ class SessionManager
 {
 public:
 	// Ctor
-	SessionManager(caf::actor_system& system);
+	explicit SessionManager(caf::actor_system& system);
 
 	// Dtor
 	~SessionManager() = default;
@@ -34,4 +34,4 @@ public:
 
 }  // namespace session_manager
 
-#endif  // SESSIONMANAGER_HPP
+#endif  // ICOGRAPH_SESSIONMANAGER_HPP

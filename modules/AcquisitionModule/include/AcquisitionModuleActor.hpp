@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef ACQUISITIONMODULEACTOR_HPP
-#define ACQUISITIONMODULEACTOR_HPP
+#ifndef ICOGRAPH_ACQUISITIONMODULEACTOR_HPP
+#define ICOGRAPH_ACQUISITIONMODULEACTOR_HPP
 
 #include <caf/typed_event_based_actor.hpp>
 
@@ -39,4 +39,4 @@ acq_module_actor::behavior_type acquisition_actor_behavior(
 
 }  // namespace acq_module
 
-#endif  // ACQUISITIONMODULEACTOR_HPP
+#endif  // ICOGRAPH_ACQUISITIONMODULEACTOR_HPP

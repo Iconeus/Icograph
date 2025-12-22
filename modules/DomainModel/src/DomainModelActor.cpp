@@ -14,11 +14,7 @@ namespace domain_model
 {
 
 domain_model_actor_state::domain_model_actor_state(domain_model_actor::pointer_view self)
-    : _self(self)
-{
-	// Instantiate dummy domain model instance. For now has no particular purpose.
-	_model = std::make_unique<domain_model::DomainModel>();
-};
+    : _self(self), _model(std::make_unique<domain_model::DomainModel>()){};
 
 // --------------------------------------------------------------------
 

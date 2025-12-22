@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://your-repository-url.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                script {
+                    sh '''
+                        xmake config -P 4
+                        xmake build
+                    '''
+                }
+            }
+        }
+        stage('Unit Test') {
+            steps {
+                script {
+                    sh '''
+                        xmake run --unit-tests
+                    '''
+                }
+            }
+        }
+    }
+}
