@@ -4,8 +4,8 @@ Preliminary study for the SessionManager
 Missing important items:
 - [ ] Logging system with spdlog
 - [ ] Signal handling (exit of actors)
-- [ ] Packaging
-- [ ] Installer
+- [ ] Packaging and Installer ([INOSETUP](https://xmake.io/guide/basic-commands/pack-programs.html))
+- [ ] Installer  (beware of sources brought by includir)
 - [ ] Error handling
 - [ ] CI
 - [ ] Unit Tests
