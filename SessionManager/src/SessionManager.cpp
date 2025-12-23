@@ -8,12 +8,12 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#include "SessionManager.hpp"
+#include "SessionManager/SessionManager.hpp"
 
-#include "CustomActorIdentifier.hpp"
-#include "DomainModelActor.hpp"
-#include "EchoViewerActor.hpp"
-#include "WorkflowActor.hpp"
+#include "CAF/CustomActorIdentifier.hpp"
+#include "DomainModel/DomainModelActor.hpp"
+#include "EchoViewModel/EchoViewerActor.hpp"
+#include "WorkflowManager/WorkflowActor.hpp"
 
 #include <caf/actor_from_state.hpp>
 #include <caf/actor_registry.hpp>

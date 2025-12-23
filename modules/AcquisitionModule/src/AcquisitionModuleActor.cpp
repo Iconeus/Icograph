@@ -17,10 +17,10 @@
 #include <caf/scheduled_actor/flow.hpp>
 #include <caf/type_id.hpp>
 
-#include "AcquisitionModule.hpp"
-#include "AcquisitionModuleActor.hpp"
-#include "AcquisitionModuleTypeIds.hpp"
-#include "CustomActorIdentifier.hpp"
+#include "AcquisitionModule/AcquisitionModule.hpp"
+#include "AcquisitionModule/AcquisitionModuleActor.hpp"
+#include "AcquisitionModule/AcquisitionModuleTypeIds.hpp"
+#include "CAF/CustomActorIdentifier.hpp"
 
 namespace acq_module
 {

@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-#include "WorkflowNeuroSurgery.hpp"
+#include "WorkflowManager/WorkflowNeuroSurgery.hpp"
 
 namespace workflow
 {

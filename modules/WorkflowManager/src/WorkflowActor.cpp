@@ -10,16 +10,16 @@
 
 #include <caf/actor_registry.hpp>
 
-#include "Workflow.hpp"
-#include "WorkflowActor.hpp"
-#include "WorkflowFactory.hpp"
-#include "WorkflowType.hpp"
-#include "WorkflowTypeIds.hpp"
+#include "WorkflowManager/Workflow.hpp"
+#include "WorkflowManager/WorkflowActor.hpp"
+#include "WorkflowManager/WorkflowFactory.hpp"
+#include "WorkflowManager/WorkflowType.hpp"
+#include "WorkflowManager/WorkflowTypeIds.hpp"
 
-#include "AcquisitionModuleActor.hpp"
-#include "AcquisitionModuleTypeIds.hpp"
+#include "AcquisitionModule/AcquisitionModuleActor.hpp"
+#include "AcquisitionModule/AcquisitionModuleTypeIds.hpp"
 
-#include "CustomActorIdentifier.hpp"
+#include "CAF/CustomActorIdentifier.hpp"
 
 namespace workflow
 {

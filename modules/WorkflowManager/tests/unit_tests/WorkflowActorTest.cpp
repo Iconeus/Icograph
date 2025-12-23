@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "WorkflowActor.hpp"
+#include "WorkflowManager/WorkflowActor.hpp"
 
 caf::behavior mock_actor_impl()
 {

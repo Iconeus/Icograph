@@ -20,7 +20,7 @@
 #include "WorkflowType.hpp"
 #include "WorkflowTypeIds.hpp"
 
-#include "AcquisitionModuleActor.hpp"
+#include "AcquisitionModule/AcquisitionModuleActor.hpp"
 
 namespace workflow
 {

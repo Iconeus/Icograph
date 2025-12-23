@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-#include "DomainModel.hpp"
+#include "DomainModel/DomainModel.hpp"
 
 namespace domain_model
 {

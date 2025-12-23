@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-#include "WorkflowNeonate.hpp"
+#include "WorkflowManager/WorkflowNeonate.hpp"
 
 namespace workflow
 {

@@ -8,7 +8,7 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#include "EchoViewerActor.hpp"
+#include "EchoViewModel/EchoViewerActor.hpp"
 
 namespace echo_viewer_model
 {

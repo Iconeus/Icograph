@@ -8,7 +8,7 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#include "DomainModelActor.hpp"
+#include "DomainModel/DomainModelActor.hpp"
 
 namespace domain_model
 {

@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-#include "AcquisitionModule.hpp"
+#include "AcquisitionModule/AcquisitionModule.hpp"
 
 namespace acq_module
 {

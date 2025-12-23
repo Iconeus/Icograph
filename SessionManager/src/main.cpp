@@ -14,10 +14,10 @@
 #include <caf/actor_system.hpp>
 #include <caf/caf_main.hpp>
 
-#include "SessionManager.hpp"
+#include "SessionManager/SessionManager.hpp"
 
-#include "AcquisitionModuleTypeIds.hpp"
-#include "WorkflowTypeIds.hpp"
+#include "AcquisitionModule/AcquisitionModuleTypeIds.hpp"
+#include "WorkflowManager/WorkflowTypeIds.hpp"
 
 int caf_main(caf::actor_system& system)
 {

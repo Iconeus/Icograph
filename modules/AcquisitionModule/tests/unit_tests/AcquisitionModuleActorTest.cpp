@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-#include "AcquisitionModuleActor.hpp"
+#include "AcquisitionModule/AcquisitionModuleActor.hpp"
 
 /**
  * \struct Definition of the mock-up to simulate the recepting actor

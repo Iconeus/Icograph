@@ -37,4 +37,4 @@ public:
 
 }  // namespace domain_model
 
-#endif  // DOMAINMODEL_DOMAINMODEL_HPP
+#endif /* DOMAINMODEL_DOMAINMODEL_HPP */

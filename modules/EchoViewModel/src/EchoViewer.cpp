@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-#include "EchoViewer.hpp"
+#include "EchoViewModel/EchoViewer.hpp"
 
 namespace echo_viewer_model
 {

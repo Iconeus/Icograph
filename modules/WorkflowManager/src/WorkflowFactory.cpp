@@ -8,10 +8,10 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#include "WorkflowFactory.hpp"
-#include "WorkflowNeonate.hpp"
-#include "WorkflowNeuroRadiology.hpp"
-#include "WorkflowNeuroSurgery.hpp"
+#include "WorkflowManager/WorkflowFactory.hpp"
+#include "WorkflowManager/WorkflowNeonate.hpp"
+#include "WorkflowManager/WorkflowNeuroRadiology.hpp"
+#include "WorkflowManager/WorkflowNeuroSurgery.hpp"
 
 namespace workflow
 {

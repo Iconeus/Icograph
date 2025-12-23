@@ -13,7 +13,7 @@
 
 #include <caf/type_id.hpp>
 
-#include "CustomMessageIdentifier.hpp"
+#include "CAF/CustomMessageIdentifier.hpp"
 
 // Creates custom message types for the acquisition module
 CAF_BEGIN_TYPE_ID_BLOCK(custom_types_acq_module, common_caf::custom_types_acq_module_id)

@@ -37,4 +37,4 @@ public:
 
 }  // namespace echo_viewer_model
 
-#endif  // ECHOVIEWMODEL_ECHOVIEWER_HPP
+#endif /* ECHOVIEWMODEL_ECHOVIEWER_HPP */

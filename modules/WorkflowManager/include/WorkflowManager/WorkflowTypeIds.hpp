@@ -13,7 +13,7 @@
 
 #include <caf/type_id.hpp>
 
-#include "CustomMessageIdentifier.hpp"
+#include "CAF/CustomMessageIdentifier.hpp"
 
 #include "WorkflowType.hpp"
 

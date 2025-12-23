@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-#include "WorkflowNeuroRadiology.hpp"
+#include "WorkflowManager/WorkflowNeuroRadiology.hpp"
 
 namespace workflow
 {
