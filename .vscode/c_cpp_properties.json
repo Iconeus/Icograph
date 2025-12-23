@@ -5,7 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/usr/local/include/**",
-                "/usr/local/include/caf/**"
+                "${env:HOME}/.xmake/packages/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
