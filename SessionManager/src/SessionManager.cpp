@@ -47,7 +47,7 @@ SessionManager::SessionManager(caf::actor_system& system)
 	// STATEFUL to keep the state of the display.
 	// Will be created with Qt Quick context (main Qt thread handling coming afterwards)
 	auto echoViewerActorHandle =
-	    system.spawn(caf::actor_from_state<echo_viewer_model::echo_viewer_actor_state>);
+	    system.spawn(caf::actor_from_state<echo_view_model::echo_viewer_actor_state>);
 
 	// Spawn domain Model actor.
 	// STATEFUL to store in-memory caching of the data and the list of the data

@@ -10,11 +10,11 @@
 
 #include "EchoViewModel/EchoViewerActor.hpp"
 
-namespace echo_viewer_model
+namespace echo_view_model
 {
 
 echo_viewer_actor_state::echo_viewer_actor_state(echo_viewer_actor::pointer_view self)
-    : _self(self), _viewer(std::make_unique<echo_viewer_model::EchoViewer>()){};
+    : _self(self), _viewer(std::make_unique<echo_view_model::EchoViewer>()){};
 
 // --------------------------------------------------------------------
 
@@ -23,4 +23,4 @@ echo_viewer_actor::behavior_type echo_viewer_actor_state::make_behavior()
 	return {[this](caf::publish_atom, int x) { _viewer->displayFrame(x); }};
 };
 
-}  // namespace echo_viewer_model
+}  // namespace echo_view_model

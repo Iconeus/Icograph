@@ -11,7 +11,7 @@
 #ifndef ECHOVIEWMODEL_ECHOVIEWER_HPP
 #define ECHOVIEWMODEL_ECHOVIEWER_HPP
 
-namespace echo_viewer_model
+namespace echo_view_model
 {
 
 /**
@@ -35,6 +35,6 @@ public:
 	void displayFrame(int x);
 };
 
-}  // namespace echo_viewer_model
+}  // namespace echo_view_model
 
 #endif /* ECHOVIEWMODEL_ECHOVIEWER_HPP */
