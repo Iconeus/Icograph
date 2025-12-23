@@ -18,7 +18,7 @@
 
 #include "EchoViewer.hpp"
 
-namespace echo_viewer
+namespace echo_viewer_model
 {
 
 // Definition of the messaging interface of the echo viewer necessary to
@@ -57,9 +57,9 @@ private:
 	echo_viewer_actor::pointer_view _self;
 
 	// Ptr to workflow implementation
-	std::unique_ptr<echo_viewer::EchoViewer> _viewer{nullptr};
+	std::unique_ptr<echo_viewer_model::EchoViewer> _viewer{nullptr};
 };
 
-}  // namespace echo_viewer
+}  // namespace echo_viewer_model
 
 #endif  // ECHOVIEWMODEL_ECHOVIEWERACTOR_HPP

@@ -12,7 +12,7 @@
 
 #include "EchoViewer.hpp"
 
-namespace echo_viewer
+namespace echo_viewer_model
 {
 
 void EchoViewer::displayFrame(int x)
@@ -20,4 +20,4 @@ void EchoViewer::displayFrame(int x)
 	std::cout << "Displaying frame: " << std::to_string(x) << std::endl;
 }
 
-}  // namespace echo_viewer
+}  // namespace echo_viewer_model

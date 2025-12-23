@@ -92,15 +92,15 @@ constexpr std::string to_string(WorkflowType type)
 
 	switch (value)
 	{
-	case static_cast<std::underlying_type_t<WorkflowType>>(WorkflowType::Neonate):
+	case std::to_underlying(WorkflowType::Neonate):
 		type = WorkflowType::Neonate;
 		status = true;
 		break;
-	case static_cast<std::underlying_type_t<WorkflowType>>(WorkflowType::NeuroRadiology):
+	case std::to_underlying(WorkflowType::NeuroRadiology):
 		type = WorkflowType::NeuroRadiology;
 		status = true;
 		break;
-	case static_cast<std::underlying_type_t<WorkflowType>>(WorkflowType::NeuroSurgery):
+	case std::to_underlying(WorkflowType::NeuroSurgery):
 		type = WorkflowType::NeuroSurgery;
 		status = true;
 		break;
