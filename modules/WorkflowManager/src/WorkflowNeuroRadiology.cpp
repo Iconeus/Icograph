@@ -10,6 +10,7 @@
 
 #include <iostream>
 
+#include "Logger/Logger.hpp"
 #include "WorkflowManager/WorkflowNeuroRadiology.hpp"
 
 namespace workflow
@@ -17,7 +18,7 @@ namespace workflow
 
 void WorkflowNeuroRadiology::execute()
 {
-	std::cout << "Execute workflow received " << std::endl;
+	medlog::info("Execute workflow received");
 }
 
 // --------------------------------------------------------------------

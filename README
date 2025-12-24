@@ -1,13 +1,34 @@
 # IcoGraph
 Preliminary study for the SessionManager
 
+## Setup
+Use the Linux VM stored in the NAS (link to provide).
+
+Use VSCode IDE to leverage the configuration files and utilities provided in the .vscode folder.
+
+To compile and run SessionManager:
+- `xmake run session_manager` -> build (if necessary) then run target
+OR
+- Use one of the targets in the `Run And Debug` VS Code tab and click on the green arrow
+
+To compile only:
+- `xmake build`
+
+To switch release/debug configuration (release by default):
+- `xmake f -m debug`
+- `xmake f -m release`
+
+To launch unit tests: 
+- `xmake test`
+
+## TODO List
 Missing important items:
 - [ ] Logging system with spdlog
 - [ ] Signal handling (exit of actors)
 - [ ] Packaging and Installer ([INOSETUP](https://xmake.io/guide/basic-commands/pack-programs.html))
-- [ ] Installer  (beware of sources brought by includir)
 - [ ] Error handling
-- [ ] CI
+- [x] CI
+- [ ] CI with Docker
 - [ ] Unit Tests
 - [ ] Release version
 - [ ] Profiling utilities

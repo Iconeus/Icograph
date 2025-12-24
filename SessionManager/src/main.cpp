@@ -14,6 +14,8 @@
 #include <caf/actor_system.hpp>
 #include <caf/caf_main.hpp>
 
+#include "Logger/Logger.hpp"
+
 #include "SessionManager/SessionManager.hpp"
 
 #include "AcquisitionModule/AcquisitionModuleTypeIds.hpp"
@@ -21,13 +23,21 @@
 
 int caf_main(caf::actor_system& system)
 {
-	std::cout << "C++ version: " << __cplusplus << std::endl;
+	try
+	{
+		medlog::LoggerConfig cfg;
+		medlog::initLogger(cfg);
 
-	session_manager::SessionManager sessionManager(system);
+		session_manager::SessionManager sessionManager(system);
 
-	system.await_all_actors_done();
-
-	return 0;
+		system.await_all_actors_done();
+		return 0;
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << "unhandled exception: " << e.what() << "\n";
+		return -1;
+	}
 }
 
 // Used defined ID must be specified here
