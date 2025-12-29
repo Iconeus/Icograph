@@ -20,6 +20,12 @@
 namespace medlog
 {
 
+/**
+ * \struct LoggerConfig
+ *
+ * @brief Structure holding the configurable parameters to tune the behavior of the
+ * logger. To be injected to the logger at initialization.
+ */
 struct LoggerConfig final
 {
 	std::string app_name = "app";
@@ -45,9 +51,9 @@ struct LoggerConfig final
 	std::chrono::seconds flush_every{1};  // Every second
 
 	// Pattern: Date ISO8601, thread id, level, logger name, message
-	std::string pattern = "[%Y-%m-%dT%H:%M:%S][tid=%t][%^%l%$]%n: %v";
+	std::string pattern = "[%Y-%m-%d %H:%M:%S.%e][%t][%^%=8l%$]: %v";
 
-	bool enable_console_output = false;
+	// Useful logs for audit trail
 	bool enable_separate_error_log = false;
 	bool enable_user_event_log = false;
 };

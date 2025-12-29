@@ -26,11 +26,16 @@ int caf_main(caf::actor_system& system)
 	try
 	{
 		medlog::LoggerConfig cfg;
+		cfg.app_name = "SessionManager";
+		cfg.log_filename = "SessionManager.log";
+		cfg.level = medlog::LogLevel::Trace;
 		medlog::initLogger(cfg);
 
 		session_manager::SessionManager sessionManager(system);
 
 		system.await_all_actors_done();
+
+		medlog::shutdown();
 		return 0;
 	}
 	catch (std::exception& e)

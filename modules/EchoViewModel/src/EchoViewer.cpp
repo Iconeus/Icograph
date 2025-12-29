@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+#include "Logger/Logger.hpp"
+
 #include "EchoViewModel/EchoViewer.hpp"
 
 namespace echo_view_model
@@ -17,7 +19,7 @@ namespace echo_view_model
 
 void EchoViewer::displayFrame(int x)
 {
-	std::cout << "Displaying frame: " << std::to_string(x) << std::endl;
+	medlog::info("Display frame {}", x);
 }
 
 }  // namespace echo_view_model

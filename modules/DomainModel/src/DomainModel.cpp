@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+#include "Logger/Logger.hpp"
+
 #include "DomainModel/DomainModel.hpp"
 
 namespace domain_model
@@ -17,7 +19,7 @@ namespace domain_model
 
 void DomainModel::storeData(int x)
 {
-	std::cout << "Storing frame: " << std::to_string(x) << std::endl;
+	medlog::info("Storing frame {}", x);
 }
 
 }  // namespace domain_model

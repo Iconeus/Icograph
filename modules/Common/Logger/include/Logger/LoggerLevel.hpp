@@ -16,6 +16,10 @@
 namespace medlog
 {
 
+/**
+ * @enum LogLevel
+ * @brief Represents the different log levels supported by the logger.
+ */
 enum class LogLevel : uint8_t
 {
 	Trace = 0,
@@ -26,6 +30,42 @@ enum class LogLevel : uint8_t
 	Critical = 5,
 	Off = 6
 };
+
+/**
+ * @brief Converts a LogLevel enum value to its string representation.
+ * @param type The LogLevel enum value to convert.
+ * @return std::string The string representation of the enum value.
+ */
+constexpr std::string to_string(LogLevel level)
+{
+	std::string levelName{""};
+
+	switch (level)
+	{
+	case LogLevel::Trace:
+		levelName = "Trace";
+		break;
+	case LogLevel::Debug:
+		levelName = "Debug";
+		break;
+	case LogLevel::Info:
+		levelName = "Info";
+		break;
+	case LogLevel::Warn:
+		levelName = "Warn";
+		break;
+	case LogLevel::Error:
+		levelName = "Error";
+		break;
+	case LogLevel::Critical:
+		levelName = "Critical";
+		break;
+	case LogLevel::Off:
+		levelName = "Off";
+		break;
+	}
+	return levelName;
+}
 
 }  // namespace medlog
 

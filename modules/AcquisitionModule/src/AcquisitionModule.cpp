@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+#include "Logger/Logger.hpp"
+
 #include "AcquisitionModule/AcquisitionModule.hpp"
 
 namespace acq_module
@@ -17,8 +19,7 @@ namespace acq_module
 
 void AcquisitionModule::acquisitionRequest(int32_t parameterValue)
 {
-	std::cout << "Acquisition request received with value: " << parameterValue
-	          << std::endl;
+	medlog::info("Acquisition request received with value: {}", parameterValue);
 }
 
 }  // namespace acq_module

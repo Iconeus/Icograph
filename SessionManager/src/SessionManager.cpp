@@ -8,16 +8,19 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#include "SessionManager/SessionManager.hpp"
-
-#include "CAF/CustomActorIdentifier.hpp"
-#include "DomainModel/DomainModelActor.hpp"
-#include "EchoViewModel/EchoViewerActor.hpp"
-#include "WorkflowManager/WorkflowActor.hpp"
+#include <iostream>
 
 #include <caf/actor_from_state.hpp>
 #include <caf/actor_registry.hpp>
 #include <caf/event_based_actor.hpp>
+
+#include "CAF/CustomActorIdentifier.hpp"
+#include "DomainModel/DomainModelActor.hpp"
+#include "EchoViewModel/EchoViewerActor.hpp"
+#include "Logger/Logger.hpp"
+#include "WorkflowManager/WorkflowActor.hpp"
+
+#include "SessionManager/SessionManager.hpp"
 
 namespace session_manager
 {
@@ -32,17 +35,20 @@ static void callWorkflowActor(caf::event_based_actor* self,
 	    .then(
 	        // ... wait up to 1s for a response ...
 	        [self](workflow::WorkflowType workflowType)
-	        {
-		        // ... and print it
-		        self->println("Workflow type received {}",
-		                      workflow::to_string(workflowType));
-	        });
+	        { medlog::info("Workflow type received: {}", workflowType); });
 }
 
 // --------------------------------------------------------------------
 
 SessionManager::SessionManager(caf::actor_system& system)
 {
+	medlog::trace("TEST LOGGER TRACE");
+	medlog::debug("TEST LOGGER DEBUG");
+	medlog::info("TEST LOGGER INFO");
+	medlog::warn("TEST LOGGER WARN");
+	medlog::error("TEST LOGGER ERROR");
+	medlog::critical("TEST LOGGER CRITICAL");
+
 	// Spawn acquisition view model actor.
 	// STATEFUL to keep the state of the display.
 	// Will be created with Qt Quick context (main Qt thread handling coming afterwards)

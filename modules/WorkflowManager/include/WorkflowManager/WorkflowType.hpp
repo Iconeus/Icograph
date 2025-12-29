@@ -12,6 +12,7 @@
 #define WORKFLOWMANAGER_WORKFLOWTYPE_HPP
 
 #include <cstdint>
+#include <format>
 #include <utility>
 
 namespace workflow
@@ -110,5 +111,19 @@ constexpr std::string to_string(WorkflowType type)
 }
 
 }  // namespace workflow
+
+/**
+ * @brief Specialization of the std::format for WorkflowType. Needed for logging
+ */
+template <>
+struct std::formatter<workflow::WorkflowType>
+{
+	constexpr auto parse(std::format_parse_context& ctx) { return ctx.begin(); }
+
+	auto format(const workflow::WorkflowType& type, std::format_context& ctx) const
+	{
+		return std::format_to(ctx.out(), "{}", workflow::to_string(type));
+	}
+};
 
 #endif  // WORKFLOWMANAGER_WORKFLOWTYPE_HPP
