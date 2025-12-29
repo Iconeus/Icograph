@@ -94,37 +94,45 @@ bool shouldLog(LogLevel level)
 }
 
 // --------------------------------------------------------------------
-void traceStr(std::string_view msg)
+bool shouldLogUserEvent()
+{
+	assert((_user_event_logger != nullptr) && "User event logger not initialized.");
+
+	return _user_event_logger != nullptr;
+}
+
+// --------------------------------------------------------------------
+void trace(std::string_view msg)
 {
 	_application_logger->trace(msg);
 }
 // --------------------------------------------------------------------
-void debugStr(std::string_view msg)
+void debug(std::string_view msg)
 {
 	_application_logger->debug(msg);
 }
 // --------------------------------------------------------------------
-void infoStr(std::string_view msg)
+void info(std::string_view msg)
 {
 	_application_logger->info(msg);
 }
 // --------------------------------------------------------------------
-void warnStr(std::string_view msg)
+void warn(std::string_view msg)
 {
 	_application_logger->warn(msg);
 }
 // --------------------------------------------------------------------
-void errorStr(std::string_view msg)
+void error(std::string_view msg)
 {
 	_application_logger->error(msg);
 }
 // --------------------------------------------------------------------
-void criticalStr(std::string_view msg)
+void critical(std::string_view msg)
 {
 	_application_logger->critical(msg);
 }
 // --------------------------------------------------------------------
-void userEventStr(std::string_view msg)
+void userEvent(std::string_view msg)
 {
 	assert((_user_event_logger != nullptr) && "User event logger not initialized.");
 	_user_event_logger->info(msg);
@@ -162,9 +170,6 @@ void initLogger(const LoggerConfig& cfg)
 		        appLogfilePath, cfg.max_file_size_bytes, cfg.max_files);
 		    // All levels should be logged in the file
 		    appLogFileSink->set_level(spdlog::level::trace);
-		    std::cout << "INPUT log level " << to_string(cfg.level) << std::endl;
-		    std::cout << "OUTPUT log level " << detail::convertLogLevel(cfg.level)
-		              << std::endl;
 		    appSinks.push_back(appLogFileSink);
 
 		    // Flush in an additional file dedicated for error and critical messages if

@@ -19,7 +19,7 @@ namespace acq_module
 
 void AcquisitionModule::acquisitionRequest(int32_t parameterValue)
 {
-	medlog::info("Acquisition request received with value: {}", parameterValue);
+	MEDLOG_INFO("Acquisition request received with value: {}", parameterValue);
 }
 
 }  // namespace acq_module

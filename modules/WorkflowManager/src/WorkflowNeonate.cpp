@@ -18,7 +18,7 @@ namespace workflow
 
 void WorkflowNeonate::execute()
 {
-	medlog::info("Execute workflow received.");
+	MEDLOG_INFO("Execute workflow received.");
 }
 
 // --------------------------------------------------------------------

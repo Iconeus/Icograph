@@ -18,7 +18,7 @@ namespace workflow
 
 void WorkflowNeuroRadiology::execute()
 {
-	medlog::info("Execute workflow received.");
+	MEDLOG_INFO("Execute workflow received.");
 }
 
 // --------------------------------------------------------------------

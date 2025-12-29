@@ -35,19 +35,19 @@ static void callWorkflowActor(caf::event_based_actor* self,
 	    .then(
 	        // ... wait up to 1s for a response ...
 	        [self](workflow::WorkflowType workflowType)
-	        { medlog::info("Workflow type received: {}", workflowType); });
+	        { MEDLOG_INFO("Workflow type received: {}", workflowType); });
 }
 
 // --------------------------------------------------------------------
 
 SessionManager::SessionManager(caf::actor_system& system)
 {
-	medlog::trace("TEST LOGGER TRACE");
-	medlog::debug("TEST LOGGER DEBUG");
-	medlog::info("TEST LOGGER INFO");
-	medlog::warn("TEST LOGGER WARN");
-	medlog::error("TEST LOGGER ERROR");
-	medlog::critical("TEST LOGGER CRITICAL");
+	MEDLOG_TRACE("TEST LOGGER TRACE {}", 42);
+	MEDLOG_DEBUG("TEST LOGGER DEBUG");
+	MEDLOG_INFO("TEST LOGGER INFO");
+	MEDLOG_WARN("TEST LOGGER WARN");
+	MEDLOG_ERROR("TEST LOGGER ERROR");
+	MEDLOG_CRITICAL("TEST LOGGER CRITICAL");
 
 	// Spawn acquisition view model actor.
 	// STATEFUL to keep the state of the display.

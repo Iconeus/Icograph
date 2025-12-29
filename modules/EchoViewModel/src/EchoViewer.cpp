@@ -19,7 +19,7 @@ namespace echo_view_model
 
 void EchoViewer::displayFrame(int x)
 {
-	medlog::info("Display frame {}", x);
+	MEDLOG_INFO("Display frame {}", x);
 }
 
 }  // namespace echo_view_model

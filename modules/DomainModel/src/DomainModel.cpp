@@ -19,7 +19,7 @@ namespace domain_model
 
 void DomainModel::storeData(int x)
 {
-	medlog::info("Storing frame {}", x);
+	MEDLOG_INFO("Storing frame {}", x);
 }
 
 }  // namespace domain_model
