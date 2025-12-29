@@ -75,7 +75,15 @@ void logIfEnabled(Func func,
 	if (shouldLog(Level))
 	{
 		const std::string message = std::vformat(fmt, std::make_format_args(args...));
-		func(std::format("[{}:{}] {}", loc.file_name(), loc.line(), message));
+
+		// Truncate the file name to the last characters
+		constexpr std::size_t filenameSize{30};
+		std::string fileName = loc.file_name();
+		if (fileName.length() > filenameSize)
+		{
+			fileName = fileName.substr(fileName.length() - filenameSize);
+		}
+		func(std::format("[{}:{}] {}", fileName, loc.line(), message));
 	}
 }
 

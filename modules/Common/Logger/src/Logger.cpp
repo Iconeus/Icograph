@@ -134,7 +134,6 @@ void critical(std::string_view msg)
 // --------------------------------------------------------------------
 void userEvent(std::string_view msg)
 {
-	assert((_user_event_logger != nullptr) && "User event logger not initialized.");
 	_user_event_logger->info(msg);
 }
 
