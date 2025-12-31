@@ -48,9 +48,6 @@ static caf::behavior sourceFun(caf::event_based_actor* self)
  * @brief Consumes a stream from a source actor and forwards each item to one or more
  * destination actors.
  *
- * @tparam Dests Variadic template parameter pack representing the types of destination
- * actors. All types must be `caf::actor`.
- *
  * @param self The current actor (must be an `caf::event_based_actor`).
  * @param src The source actor from which the stream is requested.
  * @param dests One or more destination actors to which each item of the stream will be

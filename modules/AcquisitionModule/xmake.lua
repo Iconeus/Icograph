@@ -4,6 +4,7 @@ target("acquisition_module")
     add_includedirs("include", {public = true})
     add_deps("common_caf")
     add_deps("common_logger")
+    add_rpathdirs("$ORIGIN") 
 
     -- Unit test target
 target("acquisition_module_tests")
@@ -13,4 +14,3 @@ target("acquisition_module_tests")
     add_packages("actor-framework", {components = {"caf_test"}})
     add_links("caf_test")
     add_tests("default")
-
