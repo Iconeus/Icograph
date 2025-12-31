@@ -9,8 +9,8 @@ target("acquisition_module")
 target("acquisition_module_tests")
     set_kind("binary")  
     add_files("tests/unit_tests/*.cpp")
-    add_includedirs("include")
     add_deps("acquisition_module")
     add_packages("actor-framework", {components = {"caf_test"}})
     add_links("caf_test")
-    add_tests("default", {runargs = {}}) -- Mark this target as a test
+    add_tests("default")
+

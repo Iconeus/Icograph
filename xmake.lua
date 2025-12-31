@@ -1,5 +1,6 @@
 add_requires("actor-framework 1.1.0")
 add_requires("spdlog v1.16.0")
+add_requires("catch2 v3.11.0")
 
 add_rules("mode.debug", "mode.release")
 

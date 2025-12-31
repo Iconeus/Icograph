@@ -41,6 +41,7 @@ int caf_main(caf::actor_system& system)
 	catch (std::exception& e)
 	{
 		std::cerr << "unhandled exception: " << e.what() << "\n";
+		medlog::shutdown();
 		return -1;
 	}
 }

@@ -51,7 +51,7 @@ struct LoggerConfig final
 	std::chrono::seconds flush_every{1};  // Every second
 
 	// Pattern: Date ISO8601, thread id, level, logger name, message
-	std::string pattern = "[%Y-%m-%d %H:%M:%S.%e][%^%t%$][%L]%v";
+	std::string pattern = "[%Y-%m-%d %H:%M:%S.%e][%^%t%$][%-8l]%v";
 
 	// Useful logs for audit trail
 	bool enable_separate_error_log = false;

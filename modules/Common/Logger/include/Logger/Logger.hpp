@@ -10,9 +10,25 @@
 
 #ifndef LOGGER_LOGGER_HPP
 #define LOGGER_LOGGER_HPP
+
 #include <source_location>
 
 #include "LoggerConfig.hpp"
+#include "LoggerLevel.hpp"
+
+/**
+ * @brief Logging library.
+ * Leverages spdlog registry Singleton to keep an instance of the registered loggers per
+ * process.
+ *
+ * Usage:
+ *   1. Create configuration: "medlog::LoggerConfig cfg".
+ *   2. Modify its parameters if necessary.
+ *   3. Call "medlog::initLoggers(cfg)"
+ *   4. Use provided MEDLOG_* macros from anywhere to push logging request in spqlog queue
+ *   5. Call "medlog::shutdown()" at the end of the process and in exception handler of
+ *      the main function.
+ */
 
 namespace medlog
 {
@@ -27,14 +43,15 @@ namespace detail
  * level is enabled.
  * @param level log level to check.
  */
-bool shouldLog(LogLevel level);
+[[nodiscard]] bool shouldLog(LogLevel level) noexcept;
 
 /**
  * @brief Helper to check if logger for user events has been properly initialized
  */
-bool shouldLogUserEvent();
+[[nodiscard]] bool shouldLogUserEvent() noexcept;
 
-// Logging functions implementation per level
+// Logging functions implementation per level. Use the default logger setup in the
+// initLogger function
 void trace(std::string_view msg);
 void debug(std::string_view msg);
 void info(std::string_view msg);
@@ -168,8 +185,7 @@ void shutdown();
 	    ::medlog::detail::critical, std::source_location::current(), \
 	    fmt __VA_OPT__(, ) __VA_ARGS__)
 
-#define MEDLOG_USER_EVENT(fmt, ...)                               \
-	medlog::detail::logUserEvent(std::source_location::current(), \
-	                             fmt __VA_OPT__(, ) __VA_ARGS__)
+#define MEDLOG_USER_EVENT(fmt, ...) \
+	medlog::detail::logUserEvent(fmt __VA_OPT__(, ) __VA_ARGS__)
 
 #endif /* LOGGER_LOGGER_HPP */
