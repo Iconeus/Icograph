@@ -17,18 +17,18 @@
 using namespace medlog;
 using namespace std::chrono_literals;
 
-static const std::string LOG_FILE_APP_NAME = "TestApp";
-static const std::string LOG_FILE_DIR = "./test_logs";
-static const std::string LOG_FILE_NAME = "test.log";
+static constexpr std::string_view LOG_FILE_APP_NAME = "TestApp";
+static constexpr std::string_view LOG_FILE_DIR = "./test_logs";
+static constexpr std::string_view LOG_FILE_NAME = "test.log";
 static constexpr std::chrono::milliseconds POLL_INTERVAL{100};
 static constexpr std::chrono::milliseconds POLL_TIMEOUT{500};
 
-static const std::string TRACE_MESSAGE = "This is a trace message";
-static const std::string DEBUG_MESSAGE = "This is a debug message";
-static const std::string INFO_MESSAGE = "This is an info message";
-static const std::string WARN_MESSAGE = "This is a warn message";
-static const std::string ERROR_MESSAGE = "This is an error message";
-static const std::string CRITICAL_MESSAGE = "This is a critical message";
+static constexpr std::string_view TRACE_MESSAGE = "This is a trace message";
+static constexpr std::string_view DEBUG_MESSAGE = "This is a debug message";
+static constexpr std::string_view INFO_MESSAGE = "This is an info message";
+static constexpr std::string_view WARN_MESSAGE = "This is a warn message";
+static constexpr std::string_view ERROR_MESSAGE = "This is an error message";
+static constexpr std::string_view CRITICAL_MESSAGE = "This is a critical message";
 
 /**
  * @brief: Generate the basic Logger configuration for unit tests to ensure that logfiles
@@ -55,8 +55,8 @@ LoggerConfig getConfigForTest()
  * @param stopFlag flag for the timeout
  */
 void pollLog(std::promise<bool>&& promise,
-             const std::string& searchString,
-             const std::string& fileName,
+             std::string_view searchString,
+             std::string_view fileName,
              std::atomic<bool>& stopFlag)
 {
 	std::filesystem::path filePath{LOG_FILE_DIR};
@@ -109,7 +109,7 @@ void pollLog(std::promise<bool>&& promise,
  * @param fileName logfile to parse
  * @param stopFlag flag for the timeout
  */
-bool isLogInFile(const std::string& searchString, const std::string& fileName)
+bool isLogInFile(std::string_view searchString, std::string_view fileName)
 {
 	bool isLogInFile{false};
 
