@@ -20,8 +20,8 @@ using namespace std::chrono_literals;
 static constexpr std::string_view LOG_FILE_APP_NAME = "TestApp";
 static constexpr std::string_view LOG_FILE_DIR = "./test_logs";
 static constexpr std::string_view LOG_FILE_NAME = "test.log";
-static constexpr std::chrono::milliseconds POLL_INTERVAL{100};
-static constexpr std::chrono::milliseconds POLL_TIMEOUT{500};
+static constexpr std::chrono::milliseconds POLL_INTERVAL{50};
+static constexpr std::chrono::milliseconds POLL_TIMEOUT{200};
 
 static constexpr std::string_view TRACE_MESSAGE = "This is a trace message";
 static constexpr std::string_view DEBUG_MESSAGE = "This is a debug message";
