@@ -42,13 +42,18 @@ namespace detail
  * @brief Helper to check if logger has been properly initialized and if the specified log
  * level is enabled.
  * @param level log level to check.
+ * @return false if log is under the level to be logged
+ *
+ * @throws std::logic_error if the logger is not initialized
  */
-[[nodiscard]] bool shouldLog(LogLevel level) noexcept;
+[[nodiscard]] bool shouldLog(LogLevel level);
 
 /**
  * @brief Helper to check if logger for user events has been properly initialized
+ *
+ * @throws std::logic_error if the logger is not initialized
  */
-[[nodiscard]] bool shouldLogUserEvent() noexcept;
+[[nodiscard]] bool shouldLogUserEvent();
 
 // Logging functions implementation per level. Use the default logger setup in the
 // initLogger function
@@ -76,6 +81,8 @@ void userEvent(std::string_view msg);
  * @param loc The source location of the log message.
  * @param fmt The format string
  * @param args The arguments to format into the message.
+ *
+ * @throws std::logic_error if the logger is not initialized.
  *
  * @note
  * - This function avoids expensive formatting operations if the log level is disabled.

@@ -1,23 +1,34 @@
 
+#include <chrono>
 #include <filesystem>
 #include <fstream>
 #include <future>
 #include <iostream>
+#include <stdexcept>
 #include <string>
 
 #include <catch2/catch_all.hpp>
+#include <catch2/matchers/catch_matchers_string.hpp>
 #include <catch2/reporters/catch_reporter_event_listener.hpp>
 #include <catch2/reporters/catch_reporter_registrars.hpp>
 
 #include "Logger/Logger.hpp"
 
 using namespace medlog;
+using namespace std::chrono_literals;
 
-static constexpr std::string LOG_FILE_APP_NAME = "TestApp";
-static constexpr std::string LOG_FILE_DIR = "./test_logs";
-static constexpr std::string LOG_FILE_NAME = "test.log";
-static constexpr std::chrono::milliseconds POLL_INTERVAL{500};
-static constexpr std::chrono::seconds POLL_TIMEOUT{3};
+static const std::string LOG_FILE_APP_NAME = "TestApp";
+static const std::string LOG_FILE_DIR = "./test_logs";
+static const std::string LOG_FILE_NAME = "test.log";
+static constexpr std::chrono::milliseconds POLL_INTERVAL{100};
+static constexpr std::chrono::milliseconds POLL_TIMEOUT{500};
+
+static const std::string TRACE_MESSAGE = "This is a trace message";
+static const std::string DEBUG_MESSAGE = "This is a debug message";
+static const std::string INFO_MESSAGE = "This is an info message";
+static const std::string WARN_MESSAGE = "This is a warn message";
+static const std::string ERROR_MESSAGE = "This is an error message";
+static const std::string CRITICAL_MESSAGE = "This is a critical message";
 
 /**
  * @brief: Generate the basic Logger configuration for unit tests to ensure that logfiles
@@ -29,13 +40,14 @@ LoggerConfig getConfigForTest()
 	cfg.app_name = LOG_FILE_APP_NAME;
 	cfg.log_dir = LOG_FILE_DIR;
 	cfg.log_filename = LOG_FILE_NAME;
+	cfg.flush_every = 50ms;
 
 	return cfg;
 }
 
 /**
- * @brief: This function will poll the logfile until the input pattern is found. If found,
- * the std::promise value will be set. Otherwise the promise is never fulfilled.
+ * @brief: This function will poll the logfile until the input pattern is found. If
+ * found, the std::promise value will be set. Otherwise the promise is never fulfilled.
  *
  * @param promise the promise to be fullfiled. To be set to true as soon as log is found.
  * @param searchString pattern to be found in the log
@@ -146,8 +158,8 @@ public:
 	using Catch::EventListenerBase::EventListenerBase;
 
 	/**
-	 * @brief: Function that is called after each test case execution. Used to cleanup the
-	 * logfiles created by the tests.
+	 * @brief: Function that is called after each test case execution. Used to cleanup
+	 * the logfiles created by the tests.
 	 */
 	void testCaseEnded(Catch::TestCaseStats const& /*testCaseStats */)
 	{
@@ -156,6 +168,10 @@ public:
 };
 
 CATCH_REGISTER_LISTENER(testRunListener)
+
+// --------------------------------------------------------------------
+// START TESTS
+// --------------------------------------------------------------------
 
 TEST_CASE("Logger initialization")
 {
@@ -167,7 +183,7 @@ TEST_CASE("Logger initialization")
 	cfg.max_files = 5;
 	cfg.async_queue_size = 1024;
 	cfg.thread_count = 1;
-	cfg.level = LogLevel::Trace;
+	cfg.level = LogLevel::Debug;  // Trace should not be logged
 	cfg.flush_every = std::chrono::seconds(1);
 	cfg.pattern = "[%Y-%m-%d %H:%M:%S.%e][%^%t%$][%-8l]%v";
 	cfg.enable_separate_error_log = true;
@@ -176,11 +192,18 @@ TEST_CASE("Logger initialization")
 	initLogger(cfg);
 
 	// Verify logger initialization
-	CHECK(detail::shouldLog(LogLevel::Trace));
+	CHECK_FALSE(detail::shouldLog(LogLevel::Trace));
+	CHECK(detail::shouldLog(LogLevel::Debug));
+	CHECK(detail::shouldLog(LogLevel::Info));
+	CHECK(detail::shouldLog(LogLevel::Warn));
+	CHECK(detail::shouldLog(LogLevel::Error));
+	CHECK(detail::shouldLog(LogLevel::Critical));
 	CHECK(detail::shouldLogUserEvent());
 
 	shutdown();
 }
+
+// --------------------------------------------------------------------
 
 TEST_CASE("Logger trace level")
 {
@@ -189,13 +212,32 @@ TEST_CASE("Logger trace level")
 	cfg.level = LogLevel::Trace;
 	initLogger(cfg);
 
-	MEDLOG_TRACE("This is a trace message");
+	MEDLOG_TRACE(TRACE_MESSAGE);
+	MEDLOG_DEBUG(DEBUG_MESSAGE);
+	MEDLOG_INFO(INFO_MESSAGE);
+	MEDLOG_WARN(WARN_MESSAGE);
+	MEDLOG_ERROR(ERROR_MESSAGE);
+	MEDLOG_CRITICAL(CRITICAL_MESSAGE);
 
 	CHECK(detail::shouldLog(LogLevel::Trace));
-	CHECK(isLogInFile("This is a trace message", LOG_FILE_NAME));
+	CHECK(detail::shouldLog(LogLevel::Debug));
+	CHECK(detail::shouldLog(LogLevel::Info));
+	CHECK(detail::shouldLog(LogLevel::Warn));
+	CHECK(detail::shouldLog(LogLevel::Error));
+	CHECK(detail::shouldLog(LogLevel::Critical));
+
+	// Verify message is logged when it should
+	CHECK(isLogInFile(TRACE_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(DEBUG_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(INFO_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(WARN_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(ERROR_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(CRITICAL_MESSAGE, LOG_FILE_NAME));
 
 	shutdown();
 }
+
+// --------------------------------------------------------------------
 
 TEST_CASE("Logger debug level")
 {
@@ -204,15 +246,32 @@ TEST_CASE("Logger debug level")
 	cfg.level = LogLevel::Debug;
 	initLogger(cfg);
 
-	// Log a debug message
-	MEDLOG_DEBUG("This is a debug message");
+	MEDLOG_TRACE(TRACE_MESSAGE);
+	MEDLOG_DEBUG(DEBUG_MESSAGE);
+	MEDLOG_INFO(INFO_MESSAGE);
+	MEDLOG_WARN(WARN_MESSAGE);
+	MEDLOG_ERROR(ERROR_MESSAGE);
+	MEDLOG_CRITICAL(CRITICAL_MESSAGE);
 
-	// Verify debug message is logged
+	CHECK_FALSE(detail::shouldLog(LogLevel::Trace));
 	CHECK(detail::shouldLog(LogLevel::Debug));
-	CHECK(isLogInFile("This is a debug message", LOG_FILE_NAME));
+	CHECK(detail::shouldLog(LogLevel::Info));
+	CHECK(detail::shouldLog(LogLevel::Warn));
+	CHECK(detail::shouldLog(LogLevel::Error));
+	CHECK(detail::shouldLog(LogLevel::Critical));
+
+	// Verify message is logged when it should
+	CHECK_FALSE(isLogInFile(TRACE_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(DEBUG_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(INFO_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(WARN_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(ERROR_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(CRITICAL_MESSAGE, LOG_FILE_NAME));
 
 	shutdown();
 }
+
+// --------------------------------------------------------------------
 
 TEST_CASE("Logger info level")
 {
@@ -221,15 +280,32 @@ TEST_CASE("Logger info level")
 	cfg.level = LogLevel::Info;
 	initLogger(cfg);
 
-	// Log an info message
-	MEDLOG_INFO("This is an info message");
+	MEDLOG_TRACE(TRACE_MESSAGE);
+	MEDLOG_DEBUG(DEBUG_MESSAGE);
+	MEDLOG_INFO(INFO_MESSAGE);
+	MEDLOG_WARN(WARN_MESSAGE);
+	MEDLOG_ERROR(ERROR_MESSAGE);
+	MEDLOG_CRITICAL(CRITICAL_MESSAGE);
 
-	// Verify info message is logged
+	CHECK_FALSE(detail::shouldLog(LogLevel::Trace));
+	CHECK_FALSE(detail::shouldLog(LogLevel::Debug));
 	CHECK(detail::shouldLog(LogLevel::Info));
-	CHECK(isLogInFile("This is an info message", LOG_FILE_NAME));
+	CHECK(detail::shouldLog(LogLevel::Warn));
+	CHECK(detail::shouldLog(LogLevel::Error));
+	CHECK(detail::shouldLog(LogLevel::Critical));
+
+	// Verify message is logged when it should
+	CHECK_FALSE(isLogInFile(TRACE_MESSAGE, LOG_FILE_NAME));
+	CHECK_FALSE(isLogInFile(DEBUG_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(INFO_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(WARN_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(ERROR_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(CRITICAL_MESSAGE, LOG_FILE_NAME));
 
 	shutdown();
 }
+
+// --------------------------------------------------------------------
 
 TEST_CASE("Logger warn level")
 {
@@ -238,15 +314,32 @@ TEST_CASE("Logger warn level")
 	cfg.level = LogLevel::Warn;
 	initLogger(cfg);
 
-	// Log a warn message
-	MEDLOG_WARN("This is a warn message");
+	MEDLOG_TRACE(TRACE_MESSAGE);
+	MEDLOG_DEBUG(DEBUG_MESSAGE);
+	MEDLOG_INFO(INFO_MESSAGE);
+	MEDLOG_WARN(WARN_MESSAGE);
+	MEDLOG_ERROR(ERROR_MESSAGE);
+	MEDLOG_CRITICAL(CRITICAL_MESSAGE);
 
-	// Verify warn message is logged
+	CHECK_FALSE(detail::shouldLog(LogLevel::Trace));
+	CHECK_FALSE(detail::shouldLog(LogLevel::Debug));
+	CHECK_FALSE(detail::shouldLog(LogLevel::Info));
 	CHECK(detail::shouldLog(LogLevel::Warn));
-	CHECK(isLogInFile("This is a warn message", LOG_FILE_NAME));
+	CHECK(detail::shouldLog(LogLevel::Error));
+	CHECK(detail::shouldLog(LogLevel::Critical));
+
+	// Verify message is logged when it should
+	CHECK_FALSE(isLogInFile(TRACE_MESSAGE, LOG_FILE_NAME));
+	CHECK_FALSE(isLogInFile(DEBUG_MESSAGE, LOG_FILE_NAME));
+	CHECK_FALSE(isLogInFile(INFO_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(WARN_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(ERROR_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(CRITICAL_MESSAGE, LOG_FILE_NAME));
 
 	shutdown();
 }
+
+// --------------------------------------------------------------------
 
 TEST_CASE("Logger error level")
 {
@@ -255,15 +348,31 @@ TEST_CASE("Logger error level")
 	cfg.level = LogLevel::Error;
 	initLogger(cfg);
 
-	// Log an error message
-	MEDLOG_ERROR("This is an error message");
+	MEDLOG_TRACE(TRACE_MESSAGE);
+	MEDLOG_DEBUG(DEBUG_MESSAGE);
+	MEDLOG_INFO(INFO_MESSAGE);
+	MEDLOG_WARN(WARN_MESSAGE);
+	MEDLOG_ERROR(ERROR_MESSAGE);
+	MEDLOG_CRITICAL(CRITICAL_MESSAGE);
 
-	// Verify error message is logged
+	CHECK_FALSE(detail::shouldLog(LogLevel::Trace));
+	CHECK_FALSE(detail::shouldLog(LogLevel::Debug));
+	CHECK_FALSE(detail::shouldLog(LogLevel::Info));
+	CHECK_FALSE(detail::shouldLog(LogLevel::Warn));
 	CHECK(detail::shouldLog(LogLevel::Error));
-	CHECK(isLogInFile("This is an error message", LOG_FILE_NAME));
+	CHECK(detail::shouldLog(LogLevel::Critical));
 
+	// Verify message is logged when it should
+	CHECK_FALSE(isLogInFile(TRACE_MESSAGE, LOG_FILE_NAME));
+	CHECK_FALSE(isLogInFile(DEBUG_MESSAGE, LOG_FILE_NAME));
+	CHECK_FALSE(isLogInFile(INFO_MESSAGE, LOG_FILE_NAME));
+	CHECK_FALSE(isLogInFile(WARN_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(ERROR_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(CRITICAL_MESSAGE, LOG_FILE_NAME));
 	shutdown();
 }
+
+// --------------------------------------------------------------------
 
 TEST_CASE("Logger critical level")
 {
@@ -272,21 +381,41 @@ TEST_CASE("Logger critical level")
 	cfg.level = LogLevel::Critical;
 	initLogger(cfg);
 
-	// Log a critical message
-	MEDLOG_CRITICAL("This is a critical message");
+	MEDLOG_TRACE(TRACE_MESSAGE);
+	MEDLOG_DEBUG(DEBUG_MESSAGE);
+	MEDLOG_INFO(INFO_MESSAGE);
+	MEDLOG_WARN(WARN_MESSAGE);
+	MEDLOG_ERROR(ERROR_MESSAGE);
+	MEDLOG_CRITICAL(CRITICAL_MESSAGE);
 
-	// Verify critical message is logged
+	CHECK_FALSE(detail::shouldLog(LogLevel::Trace));
+	CHECK_FALSE(detail::shouldLog(LogLevel::Debug));
+	CHECK_FALSE(detail::shouldLog(LogLevel::Info));
+	CHECK_FALSE(detail::shouldLog(LogLevel::Warn));
+	CHECK_FALSE(detail::shouldLog(LogLevel::Error));
 	CHECK(detail::shouldLog(LogLevel::Critical));
-	CHECK(isLogInFile("This is a critical message", LOG_FILE_NAME));
+
+	// Verify message is logged when it should
+	CHECK_FALSE(isLogInFile(TRACE_MESSAGE, LOG_FILE_NAME));
+	CHECK_FALSE(isLogInFile(DEBUG_MESSAGE, LOG_FILE_NAME));
+	CHECK_FALSE(isLogInFile(INFO_MESSAGE, LOG_FILE_NAME));
+	CHECK_FALSE(isLogInFile(WARN_MESSAGE, LOG_FILE_NAME));
+	CHECK_FALSE(isLogInFile(ERROR_MESSAGE, LOG_FILE_NAME));
+	CHECK(isLogInFile(CRITICAL_MESSAGE, LOG_FILE_NAME));
+	shutdown();
 
 	shutdown();
 }
+
+// --------------------------------------------------------------------
 
 TEST_CASE("Logger user event")
 {
 	auto cfg = getConfigForTest();
 
+	const std::string userEventLogFileName{"testUserEvent.log"};
 	cfg.enable_user_event_log = true;
+	cfg.user_event_log_filename = userEventLogFileName;
 	initLogger(cfg);
 
 	// Log a user event
@@ -294,6 +423,69 @@ TEST_CASE("Logger user event")
 
 	// Verify user event is logged
 	CHECK(detail::shouldLogUserEvent());
+	CHECK(isLogInFile("This is a user event", userEventLogFileName));
 
 	shutdown();
+}
+
+// --------------------------------------------------------------------
+
+TEST_CASE("Call without init")
+{
+	REQUIRE_THROWS_MATCHES(
+	    MEDLOG_USER_EVENT("This is a user event"), std::logic_error,
+	    Catch::Matchers::Message(
+	        "Logger not initialized. Call initLogger() first.")  // Expected exit code
+	);
+}
+
+// --------------------------------------------------------------------
+
+TEST_CASE("Call twice the init")
+{
+	auto cfg = getConfigForTest();
+	medlog::initLogger(cfg);
+
+	REQUIRE_THROWS_MATCHES(
+	    medlog::initLogger(cfg), std::logic_error,
+	    Catch::Matchers::Message("Logger already initialized.")  // Expected exit code
+	);
+	shutdown();
+}
+
+// --------------------------------------------------------------------
+
+TEST_CASE("Try to create log folder in a folder without permissions.")
+{
+	std::filesystem::path tempDir =
+	    std::filesystem::temp_directory_path() / "folder_without_permission";
+
+	// Clean if previous folder exists
+	if (std::filesystem::exists(tempDir.parent_path()))
+	{
+		std::filesystem::remove_all(tempDir);
+	}
+
+	// Create the parent directory
+	REQUIRE(std::filesystem::create_directory(tempDir));
+
+	// Remove write permissions for everyone
+	std::filesystem::permissions(tempDir, std::filesystem::perms::owner_read |
+	                                          std::filesystem::perms::group_read |
+	                                          std::filesystem::perms::others_read);
+
+	auto cfg = getConfigForTest();
+	cfg.log_dir = tempDir;
+
+	// Attempt to create the logfiles (should fail)
+	REQUIRE_THROWS_WITH(
+	    medlog::initLogger(cfg),
+	    Catch::Matchers::ContainsSubstring("Failed opening file") &&
+	        Catch::Matchers::ContainsSubstring("for writing: Permission denied"));
+
+	// Cleanup: Restore permissions and remove the directory
+	std::filesystem::permissions(tempDir, std::filesystem::perms::owner_all |
+	                                          std::filesystem::perms::group_all |
+	                                          std::filesystem::perms::others_all);
+	std::filesystem::remove_all(tempDir);
 }

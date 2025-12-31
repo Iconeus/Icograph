@@ -36,7 +36,7 @@ static_assert(int(LogLevel::Off)      == int(spdlog::level::level_enum::off));
 // clang-format on
 
 /// @brief Holds the logger configuration
-static LoggerConfig _cfg;
+static std::unique_ptr<LoggerConfig> _cfg{nullptr};
 
 /// @brief Flag for log initialization
 static std::atomic<bool> _logger_initialized{false};
@@ -53,17 +53,23 @@ constexpr spdlog::level::level_enum convertLogLevel(LogLevel level) noexcept
 }
 
 // --------------------------------------------------------------------
-[[nodiscard]] bool shouldLog(LogLevel level) noexcept
+[[nodiscard]] bool shouldLog(LogLevel level)
 {
-	assert(_logger_initialized && "Logger not initialized. Call initLogger() first.");
+	if (!_logger_initialized)
+	{
+		throw std::logic_error("Logger not initialized. Call initLogger() first.");
+	}
 
 	return spdlog::should_log(convertLogLevel(level));
 }
 
 // --------------------------------------------------------------------
-[[nodiscard]] bool shouldLogUserEvent() noexcept
+[[nodiscard]] bool shouldLogUserEvent()
 {
-	assert(_logger_initialized && "Logger not initialized. Call initLogger() first.");
+	if (!_logger_initialized)
+	{
+		throw std::logic_error("Logger not initialized. Call initLogger() first.");
+	}
 
 	return true;
 }
@@ -101,7 +107,7 @@ void critical(std::string_view msg)
 // --------------------------------------------------------------------
 void userEvent(std::string_view msg)
 {
-	spdlog::get(_cfg.user_event_name)->info(msg);
+	spdlog::get(_cfg->user_event_name)->info(msg);
 }
 
 // --------------------------------------------------------------------
@@ -131,16 +137,19 @@ void initUserEventLogger(const LoggerConfig& cfg)
 // --------------------------------------------------------------------
 void initLogger(const LoggerConfig& cfg)
 {
-	assert((detail::_logger_initialized == false) && "Logger is already initialized.");
+	if (detail::_logger_initialized)
+	{
+		throw std::logic_error("Logger already initialized.");
+	}
 
 	// Keep configuration
-	detail::_cfg = cfg;
+	detail::_cfg = std::make_unique<LoggerConfig>(cfg);
 
 	std::error_code ec;
 	std::filesystem::create_directories(cfg.log_dir, ec);
 	if (ec)
 	{
-		throw std::runtime_error("Cannot create log directory: " + cfg.log_dir +
+		throw std::runtime_error("Cannot create log directory: " + cfg.log_dir.string() +
 		                         ". Error returned: " + ec.message());
 	}
 
@@ -202,6 +211,8 @@ void shutdown()
 {
 	spdlog::drop_all();
 	spdlog::shutdown();
+	detail::_cfg.reset();
+	detail::_logger_initialized = false;
 }
 
 }  // namespace medlog

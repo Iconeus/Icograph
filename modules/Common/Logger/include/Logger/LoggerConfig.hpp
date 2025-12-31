@@ -13,6 +13,7 @@
 
 #include <chrono>
 #include <cstdint>
+#include <filesystem>
 #include <string>
 
 #include "LoggerLevel.hpp"
@@ -29,7 +30,7 @@ namespace medlog
 struct LoggerConfig final
 {
 	std::string app_name = "app";
-	std::string log_dir = "./logs";
+	std::filesystem::path log_dir = "logs";
 	std::string log_filename = "app.log";
 	std::string error_log_filename = "error.log";
 	std::string user_event_name = "UserEvent";
@@ -48,7 +49,7 @@ struct LoggerConfig final
 	// Minimum level written.
 	LogLevel level = LogLevel::Info;
 
-	std::chrono::seconds flush_every{1};  // Every second
+	std::chrono::milliseconds flush_every{1000};  // Every second
 
 	// Pattern: Date ISO8601, thread id, level, logger name, message
 	std::string pattern = "[%Y-%m-%d %H:%M:%S.%e][%^%t%$][%-8l]%v";
