@@ -1,0 +1,68 @@
+pipeline {
+    agent {
+        label 'Linux'
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Config Debug') {
+            steps {
+                script {
+                    sh '''
+                        xmake global --clean --ccache=false --theme=plain
+                        xmake repo --update --verbose --diagnosis --yes
+                        xmake config --verbose --diagnosis --yes --mode=debug
+                    '''
+                }
+            }
+        }
+        stage('Build Debug') {
+            steps {
+                script {
+                    sh '''
+                        xmake build
+                    '''
+                }
+            }
+        }
+        stage('Unit Test Debug') {
+            steps {
+                script {
+                    sh '''
+                        xmake test
+                    '''
+                }
+            }
+        }
+        stage('Config Release') {
+            steps {
+                script {
+                    sh '''
+                        xmake config --verbose --diagnosis --yes --mode=release
+                    '''
+                }
+            }
+        }
+        stage('Build Release') {
+            steps {
+                script {
+                    sh '''
+                        xmake build
+                    '''
+                }
+            }
+        }
+        stage('Unit Test Release') {
+            steps {
+                script {
+                    sh '''
+                        xmake test
+                    '''
+                }
+            }
+        }
+    }
+}

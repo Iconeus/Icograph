@@ -1,0 +1,11 @@
+BasedOnStyle: Chromium
+
+UseTab: ForIndentation
+IndentWidth: 4
+TabWidth : 4
+BreakBeforeBraces: Allman
+AllowShortIfStatementsOnASingleLine: false
+IndentCaseLabels: false
+ColumnLimit: 90
+AccessModifierOffset : -4
+InsertNewlineAtEOF: true
