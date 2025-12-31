@@ -489,3 +489,48 @@ TEST_CASE("Try to create log folder in a folder without permissions.")
 	                                          std::filesystem::perms::others_all);
 	std::filesystem::remove_all(tempDir);
 }
+
+// --------------------------------------------------------------------
+
+TEST_CASE("Multithread stress test")
+{
+	// This test sends numerous messages through 3 threads. Then we check that all
+	// messages have been successfully written without overlap between them.
+
+	auto cfg = getConfigForTest();
+	medlog::initLogger(cfg);
+
+	std::vector<std::string> messagesThread1;
+	std::vector<std::string> messagesThread2;
+	std::vector<std::string> messagesThread3;
+	uint8_t numberOfMessages{50};
+
+	auto triggerLog(
+	    [](uint8_t threadId, uint8_t numberMessages, std::vector<std::string>& messages)
+	    {
+		    for (uint8_t i = 0; i < numberMessages; i++)
+		    {
+			    std::string myMessage = "My Message number " + std::to_string(i) +
+			                            " from thread " + std::to_string(threadId);
+			    MEDLOG_INFO(myMessage);
+			    messages.push_back(myMessage);
+		    }
+	    });
+
+	std::thread thread1(triggerLog, 1, numberOfMessages, std::ref(messagesThread1));
+	std::thread thread2(triggerLog, 2, numberOfMessages, std::ref(messagesThread2));
+	std::thread thread3(triggerLog, 3, numberOfMessages, std::ref(messagesThread3));
+
+	thread1.join();
+	thread2.join();
+	thread3.join();
+
+	for (uint8_t i = 0; i < numberOfMessages; i++)
+	{
+		CHECK(isLogInFile(messagesThread1[i], LOG_FILE_NAME));
+		CHECK(isLogInFile(messagesThread2[i], LOG_FILE_NAME));
+		CHECK(isLogInFile(messagesThread3[i], LOG_FILE_NAME));
+	}
+
+	shutdown();
+}
