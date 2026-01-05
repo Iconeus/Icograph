@@ -13,6 +13,7 @@
 
 #include <chrono>
 #include <cstdint>
+#include <expected>
 #include <filesystem>
 #include <string>
 
@@ -37,7 +38,7 @@ struct LoggerConfig final
 	std::string user_event_log_filename = "UserEvent.log";
 
 	// Rotation settings
-	std::size_t max_file_size_bytes = 50ULL * 1024ULL * 1024ULL;  // 50 MB
+	std::size_t max_file_size_megabytes = 50ULL;  // 50 MB
 	std::size_t max_files = 10;
 
 	// Async queue size (tradeoff between memory and drop risk).
@@ -57,7 +58,21 @@ struct LoggerConfig final
 	// Useful logs for audit trail
 	bool enable_separate_error_log = false;
 	bool enable_user_event_log = false;
+
+	// Default constructor (uses default values)
+	LoggerConfig() = default;
 };
+
+/**
+ * @brief Generate a LoggerConfig object populated with the content of the configuration
+ * file
+ *
+ * @param: filepath of the configuration file
+ *
+ * @return: Configuration object for the logs
+ */
+std::expected<LoggerConfig, std::string> loadConfigurationFile(
+    const std::filesystem::path& filename);
 
 }  // namespace medlog
 

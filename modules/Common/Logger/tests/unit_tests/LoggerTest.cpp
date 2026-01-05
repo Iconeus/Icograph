@@ -13,6 +13,7 @@
 #include <catch2/reporters/catch_reporter_registrars.hpp>
 
 #include "Logger/Logger.hpp"
+#include "Logger/LoggerConfig.hpp"
 
 using namespace medlog;
 using namespace std::chrono_literals;
@@ -22,6 +23,8 @@ static constexpr std::string_view LOG_FILE_DIR = "./test_logs";
 static constexpr std::string_view LOG_FILE_NAME = "test.log";
 static constexpr std::chrono::milliseconds POLL_INTERVAL{50};
 static constexpr std::chrono::milliseconds POLL_TIMEOUT{200};
+
+static const std::string CONFIGURATION_FILE = "test-configuration-log.cfg";
 
 static constexpr std::string_view TRACE_MESSAGE = "This is a trace message";
 static constexpr std::string_view DEBUG_MESSAGE = "This is a debug message";
@@ -149,6 +152,28 @@ void cleanLogFileDirectory()
 }
 
 /**
+ * @brief: Create a configuration file with input content
+ *
+ * @param: Configuration file content
+ *
+ * @return True if file creation succeeded. False otherwise.
+ */
+bool createConfigurationFile(std::string_view content)
+{
+	bool result{true};
+
+	std::ofstream outFile(CONFIGURATION_FILE);
+	if (!outFile)
+	{
+		std::cerr << "Error: Unable to create file " << CONFIGURATION_FILE << std::endl;
+		result = false;
+	}
+	outFile << content;
+	outFile.close();
+	return result;
+}
+
+/**
  * @class: Class used to define events listeners for the unit tests. Useful for setup and
  * teardown functions that shall be executed before or after each test.
  */
@@ -179,7 +204,7 @@ TEST_CASE("Logger initialization")
 	cfg.error_log_filename = "test_error.log";
 	cfg.user_event_name = "TestUserEvent";
 	cfg.user_event_log_filename = "test_user_event.log";
-	cfg.max_file_size_bytes = 1024 * 1024;  // 1 MB
+	cfg.max_file_size_megabytes = 1;  // 1 MB
 	cfg.max_files = 5;
 	cfg.async_queue_size = 1024;
 	cfg.thread_count = 1;
@@ -503,7 +528,7 @@ TEST_CASE("Multithread stress test")
 	std::vector<std::string> messagesThread1;
 	std::vector<std::string> messagesThread2;
 	std::vector<std::string> messagesThread3;
-	uint8_t numberOfMessages{50};
+	constexpr uint8_t numberOfMessages{50};
 
 	auto triggerLog(
 	    [](uint8_t threadId, uint8_t numberMessages, std::vector<std::string>& messages)
@@ -531,6 +556,26 @@ TEST_CASE("Multithread stress test")
 		CHECK(isLogInFile(messagesThread2[i], LOG_FILE_NAME));
 		CHECK(isLogInFile(messagesThread3[i], LOG_FILE_NAME));
 	}
+
+	shutdown();
+}
+
+// --------------------------------------------------------------------
+
+TEST_CASE("Load configuration file")
+{
+	std::string_view content = "app_name = appTest\nlog_dir = logsTest";
+
+	CHECK(createConfigurationFile(content));
+
+	std::filesystem::path configurationFilePath(CONFIGURATION_FILE);
+
+	auto result = medlog::loadConfigurationFile(configurationFilePath);
+	CHECK(result);
+
+	LoggerConfig config = result.value();
+	CHECK(config.app_name == "appTest");
+	CHECK(config.log_dir == "logsTest");
 
 	shutdown();
 }

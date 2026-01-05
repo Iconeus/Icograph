@@ -42,14 +42,7 @@ static void callWorkflowActor(caf::event_based_actor* self,
 
 SessionManager::SessionManager(caf::actor_system& system)
 {
-	MEDLOG_TRACE("TEST LOGGER TRACE {}", 42);
-	MEDLOG_DEBUG("TEST LOGGER DEBUG");
-	MEDLOG_INFO("TEST LOGGER INFO");
-	MEDLOG_WARN("TEST LOGGER WARN");
-	MEDLOG_ERROR("TEST LOGGER ERROR");
-	MEDLOG_CRITICAL("TEST LOGGER CRITICAL");
-
-	// Spawn acquisition view model actor.
+	// Spawn viewer model actor.
 	// STATEFUL to keep the state of the display.
 	// Will be created with Qt Quick context (main Qt thread handling coming afterwards)
 	auto echoViewerActorHandle =

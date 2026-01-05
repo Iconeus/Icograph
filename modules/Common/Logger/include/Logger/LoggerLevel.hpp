@@ -67,6 +67,48 @@ constexpr std::string to_string(LogLevel level)
 	return levelName;
 }
 
+/**
+ * @brief Attempts to convert a string to a WorkflowType enum value.
+ * @param str The string to convert.
+ * @param type Reference to the WorkflowType enum value to populate.
+ * @return bool True if the conversion was successful, false otherwise.
+ */
+[[nodiscard]] constexpr bool from_string(std::string_view str, LogLevel& type)
+{
+	bool status{false};
+	if (str == "Trace")
+	{
+		type = LogLevel::Trace;
+		status = true;
+	}
+	else if (str == "Debug")
+	{
+		type = LogLevel::Debug;
+		status = true;
+	}
+	else if (str == "Info")
+	{
+		type = LogLevel::Info;
+		status = true;
+	}
+	else if (str == "Warn")
+	{
+		type = LogLevel::Warn;
+		status = true;
+	}
+	else if (str == "Error")
+	{
+		type = LogLevel::Error;
+		status = true;
+	}
+	else if (str == "Critical")
+	{
+		type = LogLevel::Critical;
+		status = true;
+	}
+	return status;
+}
+
 }  // namespace medlog
 
 #endif /* LOGGER_LOGGERLEVEL_HPP */

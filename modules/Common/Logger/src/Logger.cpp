@@ -120,8 +120,11 @@ void initUserEventLogger(const LoggerConfig& cfg)
 	std::filesystem::path userEventLogfilePath{cfg.log_dir};
 	userEventLogfilePath /= cfg.user_event_log_filename;
 
+	// Convert from Megabytes to bytes
+	std::size_t max_file_size_bytes = cfg.max_file_size_megabytes * 1024ULL * 1024ULL;
+
 	auto userEventLogFileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
-	    userEventLogfilePath, cfg.max_file_size_bytes, cfg.max_files);
+	    userEventLogfilePath, max_file_size_bytes, cfg.max_files);
 
 	auto user_event_logger = std::make_shared<spdlog::async_logger>(
 	    cfg.user_event_name, userEventLogFileSink, spdlog::thread_pool(),
@@ -165,8 +168,11 @@ void initLogger(const LoggerConfig& cfg)
 	std::filesystem::path appLogfilePath{cfg.log_dir};
 	appLogfilePath /= cfg.log_filename;
 
+	// Convert from Megabytes to bytes
+	std::size_t max_file_size_bytes = cfg.max_file_size_megabytes * 1024ULL * 1024ULL;
+
 	auto appLogFileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
-	    appLogfilePath, cfg.max_file_size_bytes, cfg.max_files);
+	    appLogfilePath, max_file_size_bytes, cfg.max_files);
 
 	// All levels should be logged in the file
 	appLogFileSink->set_level(spdlog::level::trace);
@@ -180,7 +186,7 @@ void initLogger(const LoggerConfig& cfg)
 		errorLogfilePath /= cfg.error_log_filename;
 
 		auto errorLogFileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
-		    errorLogfilePath, cfg.max_file_size_bytes, cfg.max_files);
+		    errorLogfilePath, max_file_size_bytes, cfg.max_files);
 
 		// Only error and critical levels should be logged in this file
 		errorLogFileSink->set_level(spdlog::level::err);
