@@ -105,7 +105,7 @@ struct Converter
 
 	static constexpr void operator()(std::string_view value, std::size_t& param)
 	{
-		int valueInt;
+		std::size_t valueInt;
 
 		auto result =
 		    std::from_chars(value.data(), value.data() + value.size(), valueInt);
@@ -126,7 +126,7 @@ struct Converter
 	static constexpr void operator()(std::string_view value,
 	                                 std::chrono::milliseconds& param)
 	{
-		int valueInt;
+		std::int64_t valueInt;  // To have enough bits to encode a chrono::milliseconds
 		auto result =
 		    std::from_chars(value.data(), value.data() + value.size(), valueInt);
 		if (result.ec == std::errc::invalid_argument)

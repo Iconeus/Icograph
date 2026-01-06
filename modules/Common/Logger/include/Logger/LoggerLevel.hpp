@@ -13,6 +13,7 @@
 
 #include <cstdint>
 #include <exception>
+#include <utility>
 
 namespace medlog
 {
@@ -59,7 +60,7 @@ constexpr std::string to_string(LogLevel level)
 		return "Off"s;
 	}
 
-	throw std::domain_error("Invalid value for LogLevel: " + static_cast<int>(level));
+	throw std::domain_error("Invalid value for LogLevel: " + std::to_underlying(level));
 }
 
 /**

@@ -44,17 +44,15 @@ constexpr std::string to_string(WorkflowType type)
 	{
 	case WorkflowType::Neonate:
 		return "Neonate"s;
-		break;
 	case WorkflowType::NeuroRadiology:
 		return "NeuroRadiology"s;
-		break;
 	case WorkflowType::NeuroSurgery:
 		return "NeuroSurgery"s;
-		break;
 	}
 
 	// throw exception et rajouter return dans chaque case
-	throw std::domain_error("Invalid value for WorkflowType: " + static_cast<int>(type));
+	throw std::domain_error("Invalid value for WorkflowType: " +
+	                        std::to_underlying(type));
 }
 
 /**

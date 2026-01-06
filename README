@@ -23,7 +23,7 @@ To launch unit tests:
 
 ## TODO List
 Missing important items:
-- [ ] Logging system with spdlog
+- [x] Logging system with spdlog
 - [ ] Signal handling (exit of actors)
 - [ ] Packaging and Installer ([INOSETUP](https://xmake.io/guide/basic-commands/pack-programs.html))
 - [ ] Error handling

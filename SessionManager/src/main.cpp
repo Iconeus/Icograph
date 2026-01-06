@@ -25,13 +25,15 @@ int caf_main(caf::actor_system& system)
 {
 	try
 	{
+		using namespace std::string_literals;
+
 		// Instantiate the logger with the input configuration.
 		// Will read the configuration from a file in the future (during installation and
 		// deployment development).
 
 		// Logger is valid as long as
-		medlog::Logger logger(medlog::LoggerConfig{.app_name = "SessionManager",
-		                                           .log_filename = "SessionManager.log",
+		medlog::Logger logger(medlog::LoggerConfig{.app_name = "SessionManager"s,
+		                                           .log_filename = L"SessionManager.log"s,
 		                                           .level = medlog::LogLevel::Info});
 
 		session_manager::SessionManager sessionManager(system);
