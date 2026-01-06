@@ -31,6 +31,8 @@ Missing important items:
 - [ ] CI with Docker
 - [ ] Unit Tests
 - [ ] Release version
-- [ ] Profiling utilities
+- [ ] Profiling utilities 
 - [ ] Configuration
 - [ ] Monitoring
+- [ ] Sonar
+- [ ] Online documentation

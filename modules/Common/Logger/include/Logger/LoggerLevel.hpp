@@ -12,6 +12,7 @@
 #define LOGGER_LOGGERLEVEL_HPP
 
 #include <cstdint>
+#include <exception>
 
 namespace medlog
 {
@@ -38,70 +39,66 @@ enum class LogLevel : uint8_t
  */
 constexpr std::string to_string(LogLevel level)
 {
-	std::string levelName{""};
+	using namespace std::string_literals;
 
 	switch (level)
 	{
 	case LogLevel::Trace:
-		levelName = "Trace";
-		break;
+		return "Trace"s;
 	case LogLevel::Debug:
-		levelName = "Debug";
-		break;
+		return "Debug"s;
 	case LogLevel::Info:
-		levelName = "Info";
-		break;
+		return "Info"s;
 	case LogLevel::Warn:
-		levelName = "Warn";
-		break;
+		return "Warn"s;
 	case LogLevel::Error:
-		levelName = "Error";
-		break;
+		return "Error"s;
 	case LogLevel::Critical:
-		levelName = "Critical";
-		break;
+		return "Critical"s;
 	case LogLevel::Off:
-		levelName = "Off";
-		break;
+		return "Off"s;
 	}
-	return levelName;
+
+	throw std::domain_error("Invalid value for LogLevel: " + static_cast<int>(level));
 }
 
 /**
- * @brief Attempts to convert a string to a WorkflowType enum value.
+ * @brief Attempts to convert a string to a LogLevel enum value.
  * @param str The string to convert.
- * @param type Reference to the WorkflowType enum value to populate.
+ * @param type Reference to the LogLevel enum value to populate.
  * @return bool True if the conversion was successful, false otherwise.
  */
 [[nodiscard]] constexpr bool from_string(std::string_view str, LogLevel& type)
 {
+	using namespace std::string_view_literals;
+
 	bool status{false};
-	if (str == "Trace")
+	if (str == "Trace"sv)
 	{
 		type = LogLevel::Trace;
 		status = true;
 	}
-	else if (str == "Debug")
+	else if (str == "Debug"sv)
 	{
 		type = LogLevel::Debug;
 		status = true;
 	}
-	else if (str == "Info")
+	else if (str == "Info"sv)
 	{
 		type = LogLevel::Info;
 		status = true;
 	}
-	else if (str == "Warn")
+	else if (str == "Warn"sv)
 	{
 		type = LogLevel::Warn;
 		status = true;
 	}
-	else if (str == "Error")
+	else if (str == "Error"sv)
 	{
 		type = LogLevel::Error;
 		status = true;
 	}
-	else if (str == "Critical")
+	else if (str == "Critical"sv)
 	{
 		type = LogLevel::Critical;
 		status = true;

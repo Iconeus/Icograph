@@ -55,7 +55,7 @@ constexpr spdlog::level::level_enum convertLogLevel(LogLevel level) noexcept
 // --------------------------------------------------------------------
 [[nodiscard]] bool shouldLog(LogLevel level)
 {
-	if (!_logger_initialized)
+	if (!spdlog::get(_cfg->app_name))
 	{
 		throw std::logic_error("Logger not initialized. Call initLogger() first.");
 	}
@@ -66,7 +66,7 @@ constexpr spdlog::level::level_enum convertLogLevel(LogLevel level) noexcept
 // --------------------------------------------------------------------
 [[nodiscard]] bool shouldLogUserEvent()
 {
-	if (!_logger_initialized)
+	if (!spdlog::get(_cfg->user_event_name))
 	{
 		throw std::logic_error("Logger not initialized. Call initLogger() first.");
 	}
@@ -110,35 +110,26 @@ void userEvent(std::string_view msg)
 	spdlog::get(_cfg->user_event_name)->info(msg);
 }
 
-// --------------------------------------------------------------------
-/**
- * @brief: Initialize the dedicated logger for user events, setting the level to info.
- * @param cfg The logging configuration
- */
-void initUserEventLogger(const LoggerConfig& cfg)
-{
-	std::filesystem::path userEventLogfilePath{cfg.log_dir};
-	userEventLogfilePath /= cfg.user_event_log_filename;
-
-	// Convert from Megabytes to bytes
-	std::size_t max_file_size_bytes = cfg.max_file_size_megabytes * 1024ULL * 1024ULL;
-
-	auto userEventLogFileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
-	    userEventLogfilePath, max_file_size_bytes, cfg.max_files);
-
-	auto user_event_logger = std::make_shared<spdlog::async_logger>(
-	    cfg.user_event_name, userEventLogFileSink, spdlog::thread_pool(),
-	    spdlog::async_overflow_policy::block);
-	user_event_logger->set_pattern(cfg.pattern);
-	user_event_logger->set_level(spdlog::level::info);
-
-	spdlog::register_logger(user_event_logger);
-}
-
 }  // namespace detail
 
 // --------------------------------------------------------------------
-void initLogger(const LoggerConfig& cfg)
+//
+// C L A S S   L O G G E R
+//
+// --------------------------------------------------------------------
+Logger::Logger(const LoggerConfig& cfg)
+{
+	initLogger(cfg);
+}
+
+// --------------------------------------------------------------------
+Logger::~Logger()
+{
+	shutdown();
+}
+
+// --------------------------------------------------------------------
+void Logger::initLogger(const LoggerConfig& cfg)
 {
 	if (detail::_logger_initialized)
 	{
@@ -168,8 +159,8 @@ void initLogger(const LoggerConfig& cfg)
 	std::filesystem::path appLogfilePath{cfg.log_dir};
 	appLogfilePath /= cfg.log_filename;
 
-	// Convert from Megabytes to bytes
-	std::size_t max_file_size_bytes = cfg.max_file_size_megabytes * 1024ULL * 1024ULL;
+	// Convert from MiB to bytes
+	std::size_t max_file_size_bytes = cfg.max_file_size_mebibytes * 1024ULL * 1024ULL;
 
 	auto appLogFileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
 	    appLogfilePath, max_file_size_bytes, cfg.max_files);
@@ -206,14 +197,35 @@ void initLogger(const LoggerConfig& cfg)
 	// If enabled, configure the logger for user events
 	if (cfg.enable_user_event_log)
 	{
-		detail::initUserEventLogger(cfg);
+		initUserEventLogger(cfg);
 	}
 
 	detail::_logger_initialized = true;
 }
 
 // --------------------------------------------------------------------
-void shutdown()
+void Logger::initUserEventLogger(const LoggerConfig& cfg)
+{
+	std::filesystem::path userEventLogfilePath{cfg.log_dir};
+	userEventLogfilePath /= cfg.user_event_log_filename;
+
+	// Convert from Mebibytes to bytes
+	std::size_t max_file_size_bytes = cfg.max_file_size_mebibytes * 1024ULL * 1024ULL;
+
+	auto userEventLogFileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
+	    userEventLogfilePath, max_file_size_bytes, cfg.max_files);
+
+	auto user_event_logger = std::make_shared<spdlog::async_logger>(
+	    cfg.user_event_name, userEventLogFileSink, spdlog::thread_pool(),
+	    spdlog::async_overflow_policy::block);
+	user_event_logger->set_pattern(cfg.pattern);
+	user_event_logger->set_level(spdlog::level::info);
+
+	spdlog::register_logger(user_event_logger);
+}
+
+// --------------------------------------------------------------------
+void Logger::shutdown()
 {
 	spdlog::drop_all();
 	spdlog::shutdown();

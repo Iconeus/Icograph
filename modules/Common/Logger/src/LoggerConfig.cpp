@@ -8,6 +8,7 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
+#include <exception>
 #include <expected>
 #include <fstream>
 #include <functional>
@@ -15,29 +16,13 @@
 #include <map>
 #include <sstream>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include "Logger/LoggerConfig.hpp"
 
 namespace medlog
 {
-
-enum class parse_error
-{
-	invalid_input,
-	overflow
-};
-
-// Traits for milliseconds check
-template <typename T>
-struct is_milliseconds : std::false_type
-{
-};
-
-template <>
-struct is_milliseconds<std::chrono::milliseconds> : std::true_type
-{
-};
 
 /**
  * \struct Converter
@@ -49,57 +34,107 @@ struct Converter
 {
 	/**
 	 * @brief: Converter to handle boolean parameters
+	 *
+	 * @param value: value to read
+	 * @param param: output param filled with input value
+	 * @throws std::invalid_argument if invalid value for a boolean
 	 */
-	void operator()(std::string_view value, bool& param) const
+	static constexpr void operator()(std::string_view value, bool& param)
 	{
-		if (value == "true")
+		using namespace std::string_view_literals;
+
+		static const std::unordered_set<std::string_view> trueValues = {"true"sv,
+		                                                                "TRUE"sv, "1"sv};
+		static const std::unordered_set<std::string_view> falseValues = {
+		    "false"sv, "FALSE"sv, "0"sv};
+
+		if (trueValues.find(value) != trueValues.end())
 		{
 			param = true;
 		}
-		else if (value == "false")
+		else if (falseValues.find(value) != falseValues.end())
 		{
 			param = false;
+		}
+		else
+		{
+			throw std::invalid_argument("Invalid value for boolean: " +
+			                            std::string(value));
 		}
 	}
 
 	/**
-	 * @brief: Converter to handle filesystem::path parameters
+	 * @brief: Converter to handle LogLevel parameters
+	 *
+	 * @param value: value to read
+	 * @param param: output param filled with input value
+	 * @throws std::invalid_argument if invalid value for a boolean
 	 */
-	void operator()(std::string_view value, std::filesystem::path& param) const
+	static constexpr void operator()(std::string_view value, LogLevel& param)
+	{
+		auto result = from_string(value, param);
+		if (!result)
+		{
+			throw std::invalid_argument("Invalid value for LogLevel: " +
+			                            std::string(value));
+		}
+	}
+
+	/**
+	 * @brief: Converter to handle std::string and std::filesystem::path parameters
+	 *
+	 * @tparam T The target type, restricted to `std::string` or `std::filesystem::path`.
+	 * @param value: value to read
+	 * @param param: output param filled with input value
+	 */
+	template <typename T,
+	          typename = std::enable_if_t<
+	              std::disjunction_v<std::is_same<T, std::string>,
+	                                 std::is_same<T, std::filesystem::path>>>>
+	static constexpr void operator()(std::string_view value, T& param)
 	{
 		param = value;
 	}
 
 	/**
-	 * @brief: Converter to handle std::string parameters
+	 * @brief: Converter to handle size_t parameters
+	 *
+	 * @param value: value to read
+	 * @param param: output param filled with input value
 	 */
-	void operator()(std::string_view value, std::string& param) const { param = value; }
 
-	/**
-	 * @brief: Converter to handle LogLevel parameters
-	 */
-	void operator()(std::string_view value, LogLevel& param) const
+	static constexpr void operator()(std::string_view value, std::size_t& param)
 	{
-		auto result = from_string(value, param);
-		std::cout << "TODO " << result << std::endl;
+		int valueInt;
+
+		auto result =
+		    std::from_chars(value.data(), value.data() + value.size(), valueInt);
+		if (result.ec == std::errc::invalid_argument)
+		{
+			throw std::invalid_argument("Invalid value for size_t: " +
+			                            std::string(value));
+		}
+		param = static_cast<std::size_t>(valueInt);
 	}
 
 	/**
-	 * @brief: Converter to handle size_t and chrono::milliseconds parameters
+	 * @brief: Converter to handle chrono::milliseconds parameters
+	 *
+	 * @param value: value to read
+	 * @param param: output param filled with input value
 	 */
-	template <typename T,
-	          typename = std::enable_if_t<
-	              std::disjunction_v<std::is_same<T, size_t>, is_milliseconds<T>>>>
-	void operator()(std::string_view value, T& param) const
+	static constexpr void operator()(std::string_view value,
+	                                 std::chrono::milliseconds& param)
 	{
 		int valueInt;
 		auto result =
 		    std::from_chars(value.data(), value.data() + value.size(), valueInt);
 		if (result.ec == std::errc::invalid_argument)
 		{
-			std::cout << "Could not convert.";
+			throw std::invalid_argument("Invalid value for milliseconds: " +
+			                            std::string(value));
 		}
-		param = static_cast<T>(valueInt);
+		param = static_cast<std::chrono::milliseconds>(valueInt);
 	}
 };
 
@@ -107,38 +142,39 @@ struct Converter
 [[nodiscard]] std::expected<LoggerConfig, std::string> loadConfigurationFile(
     const std::filesystem::path& filename)
 {
+	using namespace std::string_literals;
+
 	LoggerConfig cfg;
 
 	std::ifstream file(filename);
 
 	Converter converter{};
 	std::unordered_map<std::string, std::function<void(const std::string&)>> setters = {
-	    {"app_name", [&](const std::string& val) { converter(val, cfg.app_name); }},
-	    {"log_dir", [&](const std::string& val) { converter(val, cfg.log_dir); }},
-	    {"log_filename",
+	    {"app_name"s, [&](const std::string& val) { converter(val, cfg.app_name); }},
+	    {"log_dir"s, [&](const std::string& val) { converter(val, cfg.log_dir); }},
+	    {"log_filename"s,
 	     [&](const std::string& val) { converter(val, cfg.log_filename); }},
-	    {"error_log_filename",
+	    {"error_log_filename"s,
 	     [&](const std::string& val) { converter(val, cfg.error_log_filename); }},
-	    {"user_event_name",
+	    {"user_event_name"s,
 	     [&](const std::string& val) { converter(val, cfg.user_event_name); }},
-	    {"user_event_log_filename",
+	    {"user_event_log_filename"s,
 	     [&](const std::string& val) { converter(val, cfg.user_event_log_filename); }},
-	    {"max_file_size_megabytes",
-	     [&](const std::string& val) { converter(val, cfg.max_file_size_megabytes); }},
-	    {"max_files", [&](const std::string& val) { converter(val, cfg.max_files); }},
-	    {"async_queue_size",
+	    {"max_file_size_mebibytes"s,
+	     [&](const std::string& val) { converter(val, cfg.max_file_size_mebibytes); }},
+	    {"max_files"s, [&](const std::string& val) { converter(val, cfg.max_files); }},
+	    {"async_queue_size"s,
 	     [&](const std::string& val) { converter(val, cfg.async_queue_size); }},
-	    {"thread_count",
+	    {"thread_count"s,
 	     [&](const std::string& val) { converter(val, cfg.thread_count); }},
-	    {"level", [&](const std::string& val) { converter(val, cfg.level); }},
-	    {"flush_every", [&](const std::string& val) { converter(val, cfg.flush_every); }},
-	    {"pattern", [&](const std::string& val) { converter(val, cfg.pattern); }},
-	    {"enable_separate_error_log",
+	    {"level"s, [&](const std::string& val) { converter(val, cfg.level); }},
+	    {"flush_every"s,
+	     [&](const std::string& val) { converter(val, cfg.flush_every); }},
+	    {"pattern"s, [&](const std::string& val) { converter(val, cfg.pattern); }},
+	    {"enable_separate_error_log"s,
 	     [&](const std::string& val) { converter(val, cfg.enable_separate_error_log); }},
-	    {"enable_user_event_log",
-	     [&](const std::string& val) { converter(val, cfg.enable_user_event_log); }},
-	    {"flush_every", [&](const std::string& val) { converter(val, cfg.flush_every); }},
-	};
+	    {"enable_user_event_log"s,
+	     [&](const std::string& val) { converter(val, cfg.enable_user_event_log); }}};
 
 	if (file.is_open())
 	{
@@ -157,12 +193,18 @@ struct Converter
 				value.erase(0, value.find_first_not_of(" \t"));
 				value.erase(value.find_last_not_of(" \t") + 1);
 
-				std::cout << " KEY-" << key << "---" << std::endl;
-				std::cout << " VALUE-" << value << "---" << std::endl;
-
-				if (setters.find(key) != setters.end())
+				auto found = setters.find(key);
+				if (found != setters.end())
 				{
-					setters[key](value);
+					try
+					{
+						found->second(value);
+					}
+					catch (...)
+					{
+						return std::unexpected("loadConfigurationFile: Invalid value " +
+						                       value + " for key " + key);
+					}
 				}
 				else
 				{

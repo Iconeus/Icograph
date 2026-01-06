@@ -8,8 +8,8 @@
  * Author: Alyson Roger <alyson.roger@iconeus.com>
  */
 
-#ifndef CAF_CUSTOMMESSAGEIDENTIFIER_HPP
-#define CAF_CUSTOMMESSAGEIDENTIFIER_HPP
+#ifndef COMMONCAF_CUSTOMMESSAGEIDENTIFIER_HPP
+#define COMMONCAF_CUSTOMMESSAGEIDENTIFIER_HPP
 
 #include <caf/type_id.hpp>
 
@@ -45,4 +45,4 @@ constexpr auto custom_types_acq_module_id = caf::first_custom_type_id + 20;
 
 }  // namespace common_caf
 
-#endif  // CAF_CUSTOMMESSAGEIDENTIFIER_HPP
+#endif  // COMMONCAF_CUSTOMMESSAGEIDENTIFIER_HPP

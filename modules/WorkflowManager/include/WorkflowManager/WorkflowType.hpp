@@ -12,7 +12,9 @@
 #define WORKFLOWMANAGER_WORKFLOWTYPE_HPP
 
 #include <cstdint>
+#include <exception>
 #include <format>
+#include <string>
 #include <utility>
 
 namespace workflow
@@ -36,21 +38,23 @@ enum class WorkflowType : uint8_t
  */
 constexpr std::string to_string(WorkflowType type)
 {
-	std::string workflowName{""};
+	using namespace std::string_literals;
 
 	switch (type)
 	{
 	case WorkflowType::Neonate:
-		workflowName = "Neonate";
+		return "Neonate"s;
 		break;
 	case WorkflowType::NeuroRadiology:
-		workflowName = "NeuroRadiology";
+		return "NeuroRadiology"s;
 		break;
 	case WorkflowType::NeuroSurgery:
-		workflowName = "NeuroSurgery";
+		return "NeuroSurgery"s;
 		break;
 	}
-	return workflowName;
+
+	// throw exception et rajouter return dans chaque case
+	throw std::domain_error("Invalid value for WorkflowType: " + static_cast<int>(type));
 }
 
 /**
@@ -61,18 +65,20 @@ constexpr std::string to_string(WorkflowType type)
  */
 [[nodiscard]] constexpr bool from_string(std::string_view str, WorkflowType& type)
 {
+	using namespace std::string_view_literals;
+
 	bool status{false};
-	if (str == "Neonate")
+	if (str == "Neonate"sv)
 	{
 		type = WorkflowType::Neonate;
 		status = true;
 	}
-	else if (str == "NeuroRadiology")
+	else if (str == "NeuroRadiology"sv)
 	{
 		type = WorkflowType::NeuroRadiology;
 		status = true;
 	}
-	else if (str == "NeuroSurgery")
+	else if (str == "NeuroSurgery"sv)
 	{
 		type = WorkflowType::NeuroSurgery;
 		status = true;

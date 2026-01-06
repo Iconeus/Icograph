@@ -19,6 +19,8 @@
 
 #include "LoggerLevel.hpp"
 
+using namespace std::string_literals;
+
 namespace medlog
 {
 
@@ -30,15 +32,15 @@ namespace medlog
  */
 struct LoggerConfig final
 {
-	std::string app_name = "app";
-	std::filesystem::path log_dir = "logs";
-	std::string log_filename = "app.log";
-	std::string error_log_filename = "error.log";
-	std::string user_event_name = "UserEvent";
-	std::string user_event_log_filename = "UserEvent.log";
+	std::string app_name = "app"s;
+	std::filesystem::path log_dir = L"logs"s;
+	std::filesystem::path log_filename = L"app.log"s;
+	std::filesystem::path error_log_filename = L"error.log"s;
+	std::string user_event_name = "UserEvent"s;
+	std::filesystem::path user_event_log_filename = L"UserEvent.log"s;
 
 	// Rotation settings
-	std::size_t max_file_size_megabytes = 50ULL;  // 50 MB
+	std::size_t max_file_size_mebibytes = 50ULL;  // 50 MiB
 	std::size_t max_files = 10;
 
 	// Async queue size (tradeoff between memory and drop risk).
@@ -53,14 +55,11 @@ struct LoggerConfig final
 	std::chrono::milliseconds flush_every{1000};  // Every second
 
 	// Pattern: Date ISO8601, thread id, level, logger name, message
-	std::string pattern = "[%Y-%m-%d %H:%M:%S.%e][%^%t%$][%-8l]%v";
+	std::string pattern = "[%Y-%m-%d %H:%M:%S.%e][%t][%-8l]%v";
 
 	// Useful logs for audit trail
 	bool enable_separate_error_log = false;
 	bool enable_user_event_log = false;
-
-	// Default constructor (uses default values)
-	LoggerConfig() = default;
 };
 
 /**

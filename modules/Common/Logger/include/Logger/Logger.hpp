@@ -24,10 +24,10 @@
  * Usage:
  *   1. Create configuration: "medlog::LoggerConfig cfg".
  *   2. Modify its parameters if necessary.
- *   3. Call "medlog::initLoggers(cfg)"
- *   4. Use provided MEDLOG_* macros from anywhere to push logging request in spqlog queue
- *   5. Call "medlog::shutdown()" at the end of the process and in exception handler of
- *      the main function.
+ *   3. Create a logger object "medlog::Logger logger(cfg)"
+ *   4. Use provided MEDLOG_* macros from anywhere to push logging request in spdlog queue
+ *   5. Destruction of the logger when out of scope will perform the cleanup (global
+ *      static variables, spdlog registry, sinks etc)
  */
 
 namespace medlog
@@ -37,7 +37,6 @@ namespace medlog
 // Should not be called directly from outside.
 namespace detail
 {
-
 /**
  * @brief Helper to check if logger has been properly initialized and if the specified log
  * level is enabled.
@@ -115,7 +114,6 @@ void logIfEnabled(Func func,
  * @brief Internal helper specialized function for user event logs.
  *
  * @tparam Args Types of the format arguments.
-
  * @param fmt The format string
  * @param args The arguments to format into the message.
  *
@@ -135,20 +133,42 @@ void logUserEvent(std::string_view fmt, Args&&... args)
 
 }  // namespace detail
 
-/**
- * @brief: Initialize the logger for the current process.
- * \warning This function should always be called in the application before logging.
- *          Uses std::call_once to ensure that a single initialization is performed even
- *          if several threads call it.
- * @param cfg: configuration of the logger
- */
-void initLogger(const LoggerConfig& cfg);
+class Logger
+{
+public:
+	explicit Logger(const LoggerConfig& cfg);
 
-/**
- * @brief: Flush remaining logs in the buffer and shutdown spdlog
- * \warning This function should always be called before closing the application.
- */
-void shutdown();
+	~Logger();
+
+	// Do not allow other types of ctor/assignment operators
+	Logger() = delete;
+	Logger(const Logger&) = delete;
+	Logger& operator=(const Logger&) = delete;
+	Logger(Logger&&) = delete;
+	Logger& operator=(Logger&&) = delete;
+
+private:
+	/**
+	 * @brief: Initialize the logger for the current process.
+	 * \warning This function should always be called in the application before logging.
+	 *          Uses std::call_once to ensure that a single initialization is performed
+	 * even if several threads call it.
+	 * @param cfg: configuration of the logger
+	 */
+	void initLogger(const LoggerConfig& cfg);
+
+	/**
+	 * @brief: Initialize the logger dedicated to user events for the current process.
+	 * @param cfg: configuration of the logger
+	 */
+	void initUserEventLogger(const LoggerConfig& cfg);
+
+	/**
+	 * @brief: Flush remaining logs in the buffer and shutdown spdlog
+	 * \warning This function should always be called before closing the application.
+	 */
+	void shutdown();
+};
 
 }  // namespace medlog
 

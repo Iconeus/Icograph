@@ -174,6 +174,24 @@ bool createConfigurationFile(std::string_view content)
 }
 
 /**
+ * @brief: Delete a configuration file with input content
+ *
+ * @return True if file deletion succeeded. False otherwise.
+ */
+bool deleteConfigurationFile()
+{
+	bool result{true};
+
+	if (!std::filesystem::remove(CONFIGURATION_FILE))
+	{
+		std::cerr << "Error: Unable to delete file " << CONFIGURATION_FILE << std::endl;
+		result = false;
+	}
+
+	return result;
+}
+
+/**
  * @class: Class used to define events listeners for the unit tests. Useful for setup and
  * teardown functions that shall be executed before or after each test.
  */
@@ -204,7 +222,7 @@ TEST_CASE("Logger initialization")
 	cfg.error_log_filename = "test_error.log";
 	cfg.user_event_name = "TestUserEvent";
 	cfg.user_event_log_filename = "test_user_event.log";
-	cfg.max_file_size_megabytes = 1;  // 1 MB
+	cfg.max_file_size_mebibytes = 1;  // 1 MiB
 	cfg.max_files = 5;
 	cfg.async_queue_size = 1024;
 	cfg.thread_count = 1;
@@ -214,7 +232,7 @@ TEST_CASE("Logger initialization")
 	cfg.enable_separate_error_log = true;
 	cfg.enable_user_event_log = true;
 
-	initLogger(cfg);
+	Logger logger{cfg};
 
 	// Verify logger initialization
 	CHECK_FALSE(detail::shouldLog(LogLevel::Trace));
@@ -224,8 +242,6 @@ TEST_CASE("Logger initialization")
 	CHECK(detail::shouldLog(LogLevel::Error));
 	CHECK(detail::shouldLog(LogLevel::Critical));
 	CHECK(detail::shouldLogUserEvent());
-
-	shutdown();
 }
 
 // --------------------------------------------------------------------
@@ -235,7 +251,7 @@ TEST_CASE("Logger trace level")
 	auto cfg = getConfigForTest();
 
 	cfg.level = LogLevel::Trace;
-	initLogger(cfg);
+	Logger logger{cfg};
 
 	MEDLOG_TRACE(TRACE_MESSAGE);
 	MEDLOG_DEBUG(DEBUG_MESSAGE);
@@ -258,8 +274,6 @@ TEST_CASE("Logger trace level")
 	CHECK(isLogInFile(WARN_MESSAGE, LOG_FILE_NAME));
 	CHECK(isLogInFile(ERROR_MESSAGE, LOG_FILE_NAME));
 	CHECK(isLogInFile(CRITICAL_MESSAGE, LOG_FILE_NAME));
-
-	shutdown();
 }
 
 // --------------------------------------------------------------------
@@ -269,7 +283,7 @@ TEST_CASE("Logger debug level")
 	auto cfg = getConfigForTest();
 
 	cfg.level = LogLevel::Debug;
-	initLogger(cfg);
+	Logger logger{cfg};
 
 	MEDLOG_TRACE(TRACE_MESSAGE);
 	MEDLOG_DEBUG(DEBUG_MESSAGE);
@@ -292,8 +306,6 @@ TEST_CASE("Logger debug level")
 	CHECK(isLogInFile(WARN_MESSAGE, LOG_FILE_NAME));
 	CHECK(isLogInFile(ERROR_MESSAGE, LOG_FILE_NAME));
 	CHECK(isLogInFile(CRITICAL_MESSAGE, LOG_FILE_NAME));
-
-	shutdown();
 }
 
 // --------------------------------------------------------------------
@@ -303,7 +315,7 @@ TEST_CASE("Logger info level")
 	auto cfg = getConfigForTest();
 
 	cfg.level = LogLevel::Info;
-	initLogger(cfg);
+	Logger logger{cfg};
 
 	MEDLOG_TRACE(TRACE_MESSAGE);
 	MEDLOG_DEBUG(DEBUG_MESSAGE);
@@ -326,8 +338,6 @@ TEST_CASE("Logger info level")
 	CHECK(isLogInFile(WARN_MESSAGE, LOG_FILE_NAME));
 	CHECK(isLogInFile(ERROR_MESSAGE, LOG_FILE_NAME));
 	CHECK(isLogInFile(CRITICAL_MESSAGE, LOG_FILE_NAME));
-
-	shutdown();
 }
 
 // --------------------------------------------------------------------
@@ -337,7 +347,7 @@ TEST_CASE("Logger warn level")
 	auto cfg = getConfigForTest();
 
 	cfg.level = LogLevel::Warn;
-	initLogger(cfg);
+	Logger logger{cfg};
 
 	MEDLOG_TRACE(TRACE_MESSAGE);
 	MEDLOG_DEBUG(DEBUG_MESSAGE);
@@ -360,8 +370,6 @@ TEST_CASE("Logger warn level")
 	CHECK(isLogInFile(WARN_MESSAGE, LOG_FILE_NAME));
 	CHECK(isLogInFile(ERROR_MESSAGE, LOG_FILE_NAME));
 	CHECK(isLogInFile(CRITICAL_MESSAGE, LOG_FILE_NAME));
-
-	shutdown();
 }
 
 // --------------------------------------------------------------------
@@ -371,7 +379,7 @@ TEST_CASE("Logger error level")
 	auto cfg = getConfigForTest();
 
 	cfg.level = LogLevel::Error;
-	initLogger(cfg);
+	Logger logger{cfg};
 
 	MEDLOG_TRACE(TRACE_MESSAGE);
 	MEDLOG_DEBUG(DEBUG_MESSAGE);
@@ -394,7 +402,6 @@ TEST_CASE("Logger error level")
 	CHECK_FALSE(isLogInFile(WARN_MESSAGE, LOG_FILE_NAME));
 	CHECK(isLogInFile(ERROR_MESSAGE, LOG_FILE_NAME));
 	CHECK(isLogInFile(CRITICAL_MESSAGE, LOG_FILE_NAME));
-	shutdown();
 }
 
 // --------------------------------------------------------------------
@@ -404,7 +411,7 @@ TEST_CASE("Logger critical level")
 	auto cfg = getConfigForTest();
 
 	cfg.level = LogLevel::Critical;
-	initLogger(cfg);
+	Logger logger{cfg};
 
 	MEDLOG_TRACE(TRACE_MESSAGE);
 	MEDLOG_DEBUG(DEBUG_MESSAGE);
@@ -427,9 +434,6 @@ TEST_CASE("Logger critical level")
 	CHECK_FALSE(isLogInFile(WARN_MESSAGE, LOG_FILE_NAME));
 	CHECK_FALSE(isLogInFile(ERROR_MESSAGE, LOG_FILE_NAME));
 	CHECK(isLogInFile(CRITICAL_MESSAGE, LOG_FILE_NAME));
-	shutdown();
-
-	shutdown();
 }
 
 // --------------------------------------------------------------------
@@ -441,7 +445,7 @@ TEST_CASE("Logger user event")
 	const std::string userEventLogFileName{"testUserEvent.log"};
 	cfg.enable_user_event_log = true;
 	cfg.user_event_log_filename = userEventLogFileName;
-	initLogger(cfg);
+	Logger logger{cfg};
 
 	// Log a user event
 	MEDLOG_USER_EVENT("This is a user event");
@@ -449,8 +453,6 @@ TEST_CASE("Logger user event")
 	// Verify user event is logged
 	CHECK(detail::shouldLogUserEvent());
 	CHECK(isLogInFile("This is a user event", userEventLogFileName));
-
-	shutdown();
 }
 
 // --------------------------------------------------------------------
@@ -469,13 +471,12 @@ TEST_CASE("Call without init")
 TEST_CASE("Call twice the init")
 {
 	auto cfg = getConfigForTest();
-	medlog::initLogger(cfg);
+	medlog::Logger logger{cfg};
 
 	REQUIRE_THROWS_MATCHES(
-	    medlog::initLogger(cfg), std::logic_error,
+	    medlog::Logger(cfg), std::logic_error,
 	    Catch::Matchers::Message("Logger already initialized.")  // Expected exit code
 	);
-	shutdown();
 }
 
 // --------------------------------------------------------------------
@@ -504,7 +505,7 @@ TEST_CASE("Try to create log folder in a folder without permissions.")
 
 	// Attempt to create the logfiles (should fail)
 	REQUIRE_THROWS_WITH(
-	    medlog::initLogger(cfg),
+	    medlog::Logger(cfg),
 	    Catch::Matchers::ContainsSubstring("Failed opening file") &&
 	        Catch::Matchers::ContainsSubstring("for writing: Permission denied"));
 
@@ -523,7 +524,7 @@ TEST_CASE("Multithread stress test")
 	// messages have been successfully written without overlap between them.
 
 	auto cfg = getConfigForTest();
-	medlog::initLogger(cfg);
+	medlog::Logger logger{cfg};
 
 	std::vector<std::string> messagesThread1;
 	std::vector<std::string> messagesThread2;
@@ -556,16 +557,31 @@ TEST_CASE("Multithread stress test")
 		CHECK(isLogInFile(messagesThread2[i], LOG_FILE_NAME));
 		CHECK(isLogInFile(messagesThread3[i], LOG_FILE_NAME));
 	}
-
-	shutdown();
 }
 
 // --------------------------------------------------------------------
 
 TEST_CASE("Load configuration file")
 {
-	std::string_view content = "app_name = appTest\nlog_dir = logsTest";
+	// clang-format off
+	std::string_view content =
+	    "app_name = appTest\n" 
+		"log_dir = logsTest\n"
+		"log_filename = filenameTest\n"
+		"error_log_filename = errorFilenameTest\n"
+		"user_event_name = userEventNameTest\n"
+		"user_event_log_filename = userEventFilenameTest\n"
+		"max_file_size_mebibytes = 10\n"
+		"max_files = 2\n"
+		"async_queue_size = 5000\n"
+		"thread_count = 3\n"
+		"level = Debug\n"
+		"flush_every = 100\n"
+		"enable_separate_error_log = false\n"
+		"enable_user_event_log = true\n"
 
+;
+	// clang-format on
 	CHECK(createConfigurationFile(content));
 
 	std::filesystem::path configurationFilePath(CONFIGURATION_FILE);
@@ -576,6 +592,92 @@ TEST_CASE("Load configuration file")
 	LoggerConfig config = result.value();
 	CHECK(config.app_name == "appTest");
 	CHECK(config.log_dir == "logsTest");
+	CHECK(config.log_filename == "filenameTest");
+	CHECK(config.error_log_filename == "errorFilenameTest");
+	CHECK(config.user_event_name == "userEventNameTest");
+	CHECK(config.user_event_log_filename == "userEventFilenameTest");
+	CHECK(config.max_file_size_mebibytes == 10);
+	CHECK(config.max_files == 2);
+	CHECK(config.async_queue_size == 5000);
+	CHECK(config.thread_count == 3);
+	CHECK(config.level == LogLevel::Debug);
+	CHECK(config.flush_every == std::chrono::milliseconds(100));
+	CHECK(config.enable_separate_error_log == false);
+	CHECK(config.enable_user_event_log == true);
 
-	shutdown();
+	CHECK(deleteConfigurationFile());
+}
+
+// --------------------------------------------------------------------
+
+TEST_CASE("Load configuration file with wrong boolean input")
+{
+	// clang-format off
+	std::string_view content = "enable_separate_error_log = test\n";
+	// clang-format on
+	CHECK(createConfigurationFile(content));
+
+	std::filesystem::path configurationFilePath(CONFIGURATION_FILE);
+
+	auto result = medlog::loadConfigurationFile(configurationFilePath);
+	CHECK_FALSE(result);
+	CHECK(result.error() ==
+	      "loadConfigurationFile: Invalid value test for key enable_separate_error_log");
+
+	CHECK(deleteConfigurationFile());
+}
+
+// --------------------------------------------------------------------
+
+TEST_CASE("Load configuration file with wrong LogLevel input")
+{
+	// clang-format off
+	std::string_view content = "level = test\n";
+	// clang-format on
+	CHECK(createConfigurationFile(content));
+
+	std::filesystem::path configurationFilePath(CONFIGURATION_FILE);
+
+	auto result = medlog::loadConfigurationFile(configurationFilePath);
+	CHECK_FALSE(result);
+	CHECK(result.error() == "loadConfigurationFile: Invalid value test for key level");
+
+	CHECK(deleteConfigurationFile());
+}
+
+// --------------------------------------------------------------------
+
+TEST_CASE("Load configuration file with wrong size_t input")
+{
+	// clang-format off
+	std::string_view content = "thread_count = test\n";
+	// clang-format on
+	CHECK(createConfigurationFile(content));
+
+	std::filesystem::path configurationFilePath(CONFIGURATION_FILE);
+
+	auto result = medlog::loadConfigurationFile(configurationFilePath);
+	CHECK_FALSE(result);
+	CHECK(result.error() ==
+	      "loadConfigurationFile: Invalid value test for key thread_count");
+
+	CHECK(deleteConfigurationFile());
+}
+
+// --------------------------------------------------------------------
+
+TEST_CASE("Load configuration file with wrong key")
+{
+	// clang-format off
+	std::string_view content = "unknown_key = test\n";
+	// clang-format on
+	CHECK(createConfigurationFile(content));
+
+	std::filesystem::path configurationFilePath(CONFIGURATION_FILE);
+
+	auto result = medlog::loadConfigurationFile(configurationFilePath);
+	CHECK_FALSE(result);
+	CHECK(result.error() == "loadConfigurationFile: Invalid key unknown_key");
+
+	CHECK(deleteConfigurationFile());
 }

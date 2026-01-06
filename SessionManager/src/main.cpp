@@ -25,23 +25,24 @@ int caf_main(caf::actor_system& system)
 {
 	try
 	{
-		medlog::LoggerConfig cfg;
-		cfg.app_name = "SessionManager";
-		cfg.log_filename = "SessionManager.log";
-		cfg.level = medlog::LogLevel::Trace;
-		medlog::initLogger(cfg);
+		// Instantiate the logger with the input configuration.
+		// Will read the configuration from a file in the future (during installation and
+		// deployment development).
+
+		// Logger is valid as long as
+		medlog::Logger logger(medlog::LoggerConfig{.app_name = "SessionManager",
+		                                           .log_filename = "SessionManager.log",
+		                                           .level = medlog::LogLevel::Info});
 
 		session_manager::SessionManager sessionManager(system);
 
 		system.await_all_actors_done();
 
-		medlog::shutdown();
 		return 0;
 	}
-	catch (std::exception& e)
+	catch (const std::exception& e)
 	{
 		std::cerr << "unhandled exception: " << e.what() << "\n";
-		medlog::shutdown();
 		return -1;
 	}
 }
