@@ -133,11 +133,20 @@ void logUserEvent(std::string_view fmt, Args&&... args)
 
 }  // namespace detail
 
+/**
+ * \class Logger
+ *
+ * @brief Class for logging resources lifetime management. The creation of the logger
+ * instantiates the spdlog environment (sinks, logger, configuration). The destructor of
+ * this object performs the necessary cleanup actions to prevent memory leaks (RAII
+ * idiom).
+ */
 class Logger
 {
 public:
+	// Ctor
 	explicit Logger(const LoggerConfig& cfg);
-
+	// Dtor
 	~Logger();
 
 	// Do not allow other types of ctor/assignment operators
