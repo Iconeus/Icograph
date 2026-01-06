@@ -227,7 +227,6 @@ void Logger::initUserEventLogger(const LoggerConfig& cfg)
 // --------------------------------------------------------------------
 void Logger::shutdown()
 {
-	spdlog::drop_all();
 	spdlog::shutdown();
 	detail::_cfg.reset();
 	detail::_logger_initialized = false;
