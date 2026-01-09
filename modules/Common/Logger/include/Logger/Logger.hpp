@@ -133,6 +133,12 @@ void logUserEvent(std::string_view fmt, Args&&... args)
 
 }  // namespace detail
 
+// --------------------------------------------------------------------
+//
+// C L A S S   L O G G E R
+//
+// --------------------------------------------------------------------
+
 /**
  * \class Logger
  *
@@ -144,7 +150,10 @@ void logUserEvent(std::string_view fmt, Args&&... args)
 class Logger
 {
 public:
-	// Ctor
+	/**
+	 * @brief: Ctor that initialize the logger for the current process.
+	 * \throws exception upon failure (RAII principle)
+	 */
 	explicit Logger(const LoggerConfig& cfg);
 	// Dtor
 	~Logger();
@@ -181,6 +190,11 @@ private:
 
 }  // namespace medlog
 
+// --------------------------------------------------------------------
+//
+// M A C R O S
+//
+// --------------------------------------------------------------------
 /**
  * @brief: User availables macros per log level. Macros were the only option to be able to
  * retrieve the current location of the log combined with variadic parameters.

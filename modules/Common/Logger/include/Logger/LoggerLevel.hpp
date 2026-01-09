@@ -73,36 +73,35 @@ constexpr std::string to_string(LogLevel level)
 {
 	using namespace std::string_view_literals;
 
-	bool status{false};
+	bool status{true};
+
 	if (str == "Trace"sv)
 	{
 		type = LogLevel::Trace;
-		status = true;
 	}
 	else if (str == "Debug"sv)
 	{
 		type = LogLevel::Debug;
-		status = true;
 	}
 	else if (str == "Info"sv)
 	{
 		type = LogLevel::Info;
-		status = true;
 	}
 	else if (str == "Warn"sv)
 	{
 		type = LogLevel::Warn;
-		status = true;
 	}
 	else if (str == "Error"sv)
 	{
 		type = LogLevel::Error;
-		status = true;
 	}
 	else if (str == "Critical"sv)
 	{
 		type = LogLevel::Critical;
-		status = true;
+	}
+	else
+	{
+		status = false;
 	}
 	return status;
 }
